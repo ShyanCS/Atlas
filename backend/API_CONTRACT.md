@@ -2,7 +2,9 @@
 
 ## Hosted assessment preparation
 
-`health/` additionally returns `assessment_access_required`. Hosted API paths require a private reviewer Bearer code except health/preflight; local defaults retain anonymous samples. OpenAPI describes conditional access without embedding a secret. Structured 401/429/503 responses preserve the error envelope; no automatic provider retry is introduced.
+`health/` returns `assessment_access_required` (authorization for protected operations) and `public_examples_available`. With `ATLAS_PUBLIC_EXAMPLES_ENABLED=1`, anonymous GETs may read scenario descriptions, three curated example analyses and only the saved snapshots/frames marked public by the server. `GET examples/{scenario}/` accepts no body or query parameters. Custom POSTs, live geocoding/weather, private saved analyses, schema and operational documentation remain protected when the access hash is configured. Hosted startup still requires that hash. Structured 401/429/503 responses preserve the error envelope; no automatic provider retry is introduced.
+
+Public examples are shared caches keyed only by complete/partial/no-travel; existing rows receive a null public key and stay private. The new migration extends PostgreSQL immutability to that key. No client input can set it. Anonymous reads have a shared durable 240/minute ceiling; example builds have a shared 3/minute ceiling, at most three retained example snapshots in addition to the private admission cap. Cache refresh is local pure computation, not provider acquisition. Rate/state storage failures fail closed. Hosted examples default off until the separate public-access release approval and environment activation. Local examples default on; loopback development retains the existing authorized live workflow.
 
 Hosted mode requires PostgreSQL. A database trigger protects published result/frame JSON; provider budgets persist independently; selected hourly frames are projected in SQL. Sample/live risk and frame contracts are unchanged. Hosted live additionally requires public-weather/public-routing confirmation switches. Sample operation requires no provider credentials. See the deployment readiness report and setup checklist before publishing.
 
@@ -26,15 +28,16 @@ Base URL: `http://127.0.0.1:8000/api/v1/`. The API uses snake_case JSON, UTC ins
 
 ## Operations
 
-| Method/path | Result |
-|---|---|
-| `GET health/` | Process health, sample mode, `live_available=false`; no provider request |
-| `GET scenarios/` | Named committed endpoints, default input and complete/partial/no-travel scenarios |
-| `POST analyses/` | Validates sample input, calculates synchronously and returns the completed immutable snapshot with HTTP 201 |
-| `GET analyses/{uuid}/` | Reads the saved completed snapshot |
-| `GET analyses/{uuid}/frames/?hour=0&variable=wind` | Separate raw-variable synthetic clock frame; hour is an integer 0–48, variable wind/rain/snow |
-| `GET schema/` | drf-spectacular OpenAPI; generated checked-in schema is `backend/openapi.yaml` |
-| `GET docs/` | JSON documentation pointers; no external Swagger/CDN assets |
+| Method/path                                        | Result                                                                                                      |
+| -------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| `GET health/`                                      | Process health, sample mode, `live_available=false`; no provider request                                    |
+| `GET scenarios/`                                   | Named committed endpoints, default input and complete/partial/no-travel scenarios                           |
+| `GET examples/{scenario}/`                         | Anonymous curated example when enabled; preset inputs, shared immutable result; no provider I/O             |
+| `POST analyses/`                                   | Validates sample input, calculates synchronously and returns the completed immutable snapshot with HTTP 201 |
+| `GET analyses/{uuid}/`                             | Reads the saved completed snapshot                                                                          |
+| `GET analyses/{uuid}/frames/?hour=0&variable=wind` | Separate raw-variable synthetic clock frame; hour is an integer 0–48, variable wind/rain/snow               |
+| `GET schema/`                                      | drf-spectacular OpenAPI; generated checked-in schema is `backend/openapi.yaml`                              |
+| `GET docs/`                                        | JSON documentation pointers; no external Swagger/CDN assets                                                 |
 
 POST is deliberately synchronous. Queued/running/complete timestamps are actual lifecycle audit entries, not a worker queue, resumable job, phase polling or a promise of independent processing after a client leaves.
 
@@ -44,8 +47,16 @@ POST is deliberately synchronous. Queued/running/complete timestamps are actual 
 {
   "mode": "sample",
   "scenario": "complete",
-  "origin": {"name": "Chicago, IL", "latitude": "41.8781", "longitude": "-87.6298"},
-  "destination": {"name": "Atlanta, GA", "latitude": "33.7490", "longitude": "-84.3880"},
+  "origin": {
+    "name": "Chicago, IL",
+    "latitude": "41.8781",
+    "longitude": "-87.6298"
+  },
+  "destination": {
+    "name": "Atlanta, GA",
+    "latitude": "33.7490",
+    "longitude": "-84.3880"
+  },
   "departure_local": "2026-10-10T06:00:00",
   "origin_timezone": "America/Chicago",
   "load_weight_lb": "24000",
@@ -90,7 +101,14 @@ All 49 × 32 cell slots and their source values/times are frozen in the local sn
 ## Errors, limits and local security boundary
 
 ```json
-{"error":{"code":"LIVE_MODE_UNAVAILABLE","message":"Live providers are unavailable in this sample-only local foundation.","details":{}},"request_id":"a UUID"}
+{
+  "error": {
+    "code": "LIVE_MODE_UNAVAILABLE",
+    "message": "Live providers are unavailable in this sample-only local foundation.",
+    "details": {}
+  },
+  "request_id": "a UUID"
+}
 ```
 
 Every response includes `X-Request-ID`; a valid supplied UUID is retained, otherwise a new one is generated. Logs include only event/request ID/method/status/duration, without bodies, locations, credentials or query strings. Unexpected failures return a generic `INTERNAL_ERROR`, not a stack trace.

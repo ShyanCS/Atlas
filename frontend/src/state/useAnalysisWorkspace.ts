@@ -105,6 +105,34 @@ export function useAnalysisWorkspace(client: AnalysisApi = atlasApi) {
     [client, state.analysis?.id],
   )
 
+  const loadExample = useCallback(
+    async (scenario: TripInput['scenario'] = 'complete') => {
+      const requestId = ++sequence.current
+      analysisController.current?.abort()
+      frameController.current?.abort()
+      const controller = new AbortController()
+      analysisController.current = controller
+      dispatch({ type: 'analysis/requested', requestId })
+      try {
+        const analysis = await client.getExample(scenario, controller.signal)
+        if (
+          !mounted.current ||
+          controller.signal.aborted ||
+          analysisController.current !== controller
+        )
+          return null
+        dispatch({ type: 'analysis/received', requestId, analysis })
+        return analysis
+      } catch (error) {
+        const apiError = toApiError(error)
+        if (mounted.current && apiError.code !== 'REQUEST_ABORTED')
+          dispatch({ type: 'analysis/failed', requestId, error: apiError })
+        return null
+      }
+    },
+    [client],
+  )
+
   const restore = useCallback(
     async (id: string) => {
       const requestId = ++sequence.current
@@ -151,6 +179,7 @@ export function useAnalysisWorkspace(client: AnalysisApi = atlasApi) {
     analysisPending: state.analysisRequestId !== null,
     framePending: state.framePending,
     analyze,
+    loadExample,
     restore,
     requestFrame,
     reloadScenarios,

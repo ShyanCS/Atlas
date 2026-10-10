@@ -1,0 +1,9 @@
+{
+  "step": "resume",
+  "provider_calls": 0,
+  "tls": true,
+  "certificate_verification": "verify-full",
+  "server_version": 160015,
+  "connect_seconds": 3.301,
+  "restart_persistence": "PASS"
+}

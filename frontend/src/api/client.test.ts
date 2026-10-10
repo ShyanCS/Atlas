@@ -11,6 +11,24 @@ const json = (value: unknown, status = 200, headers = {}) =>
   })
 
 describe('typed API boundary', () => {
+  it('loads a curated example through GET without submitting trip inputs', async () => {
+    const fetcher = vi.fn<typeof fetch>().mockResolvedValue(json(completeAnalysis))
+    const result = await new AtlasApi('/api/v1', fetcher).getExample('complete')
+    expect(result.sample_data).toBe(true)
+    expect(fetcher.mock.calls[0]?.[0]).toBe('/api/v1/examples/complete/')
+    expect(fetcher.mock.calls[0]?.[1]?.method).toBe('GET')
+    expect(fetcher.mock.calls[0]?.[1]?.body).toBeUndefined()
+  })
+
+  it('rejects a mismatched example scenario instead of silently relabeling the result', async () => {
+    const fetcher = vi
+      .fn<typeof fetch>()
+      .mockResolvedValue(json({ ...completeAnalysis, scenario: 'partial' }))
+    await expect(new AtlasApi('/api/v1', fetcher).getExample('complete')).rejects.toMatchObject({
+      code: 'INVALID_RESPONSE',
+    })
+    expect(fetcher).toHaveBeenCalledOnce()
+  })
   it('reads the authored scenario contract and serializes decimal inputs without conversion', async () => {
     const fetcher = vi
       .fn<typeof fetch>()

@@ -1,0 +1,66 @@
+{
+  "status": "PASS",
+  "scope": "Hosted public examples and protected planning boundary; NOT hosted live assessment acceptance",
+  "application_revision": "7fff460d308738acb1b76995a054eff14591189d",
+  "note": "Dated verification of application code. Later documentation/evidence-only source commits preserve this runtime code; existing services are manually republished without enabling automatic deployments.",
+  "frontend": {
+    "url": "https://spotter-atlas-assessment.pages.dev/",
+    "deployment": "92a689fd-77a2-487b-a617-7914da6ff6b4",
+    "source_commit": "7fff460d308738acb1b76995a054eff14591189d",
+    "node": "24.19.0",
+    "production_auto_deploy": false,
+    "preview_deploy": "none",
+    "hosted_browser_groups_passed": 12,
+    "desktop": "1440x900",
+    "mobile": "390x844"
+  },
+  "backend": {
+    "url": "https://spotter-atlas-assessment-api.onrender.com/api/v1",
+    "verified_restart_deployment": "dep-db59dh7avr4c73ftnqfg",
+    "verified_code_commit": "8a029ca912cdafa1664641cae68db919f322f200",
+    "backend_diff_at_application_revision": "empty",
+    "plan": "free",
+    "auto_deploy": "off",
+    "public_examples_enabled": true,
+    "live_enabled": false,
+    "public_weather_confirmed": false,
+    "public_tomtom_confirmed": false,
+    "private_authorization": "PASS",
+    "published_access_scope_guard": "PASS",
+    "restart_persistence": "PASS"
+  },
+  "database": {
+    "project": "spotter-atlas-db",
+    "plan": "free_v3",
+    "postgresql": "16.15",
+    "region": "aws-us-east-1",
+    "compute_cu": 0.25,
+    "storage_limit_mib": 512,
+    "restore_hours": 6,
+    "tls": "verify-full",
+    "channel_binding": "require",
+    "migration": "0004_curated_example_access",
+    "provider_counts": {"routing": 0, "geocoding": 0, "weather": 0},
+    "existing_isolated_test_cap_count": 1
+  },
+  "verification": {
+    "backend_passed": 297,
+    "frontend_passed": 48,
+    "local_browser_groups_passed": 25,
+    "hosted_browser_groups_passed": 12,
+    "hour_positions": 49,
+    "hosted_frame_reads": 147,
+    "ci": "https://github.com/ShyanCS/Atlas/actions/runs/38082001616",
+    "required_ci_jobs": "PASS",
+    "credential_scan": "PASS",
+    "provider_calls": 0,
+    "paid_features_activated": false,
+    "new_terms_accepted": false,
+    "risk_policy_changed": false
+  },
+  "remaining_mandatory_gates": [
+    "Permitted hosted provider use and account zero-charge controls",
+    "Bounded complete hosted live three-route analysis and live corridor frames",
+    "5-10 minute Loom walkthrough recording and share URL"
+  ]
+}

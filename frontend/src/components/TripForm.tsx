@@ -3,6 +3,21 @@ import type { TripInput } from '../contracts/types'
 import { defaultTrip } from '../contracts/defaults'
 import { Icon } from './Icon'
 import { LocationPicker } from './LocationPicker'
+import { PrivatePlanningAccess } from './PrivatePlanningAccess'
+
+function nextDeparture(zone: string) {
+  return new Intl.DateTimeFormat('sv-SE', {
+    timeZone: zone,
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    hourCycle: 'h23',
+  })
+    .format(new Date(Date.now() + 3600000))
+    .replace(' ', 'T')
+}
 
 export function TripForm({
   initial = defaultTrip,
@@ -10,22 +25,32 @@ export function TripForm({
   onSubmit,
   errorMessage,
   onDirty,
+  curatedExample = false,
+  startWithLive = false,
+  privateAccessRequired = false,
 }: {
   initial?: TripInput
   pending: boolean
   onSubmit: (trip: TripInput) => void
   errorMessage?: string | undefined
   onDirty?: () => void
+  curatedExample?: boolean
+  startWithLive?: boolean
+  privateAccessRequired?: boolean
 }) {
   const [departure, setDeparture] = useState(
-    initial.departure_local?.slice(0, 16) ?? '2026-10-10T06:00',
+    startWithLive && initial.mode !== 'live'
+      ? nextDeparture(initial.origin_timezone)
+      : (initial.departure_local?.slice(0, 16) ?? '2026-10-10T06:00'),
   )
   const [load, setLoad] = useState(String(initial.load_weight_lb))
   const [interval, setInterval] = useState<10 | 25 | 50>(
     initial.checkpoint_interval_miles as 10 | 25 | 50,
   )
   const [scenario, setScenario] = useState(initial.scenario)
-  const [mode, setMode] = useState<'sample' | 'live'>(initial.mode === 'live' ? 'live' : 'sample')
+  const [mode, setMode] = useState<'sample' | 'live'>(
+    startWithLive || initial.mode === 'live' ? 'live' : 'sample',
+  )
   const [origin, setOrigin] = useState(initial.origin)
   const [destination, setDestination] = useState(initial.destination)
   const [originReady, setOriginReady] = useState(true)
@@ -67,7 +92,7 @@ export function TripForm({
   return (
     <form className="trip-form" onSubmit={submit} onChange={onDirty}>
       <div className="field">
-        <label htmlFor="analysis-mode">Data mode</label>
+        <label htmlFor="analysis-mode">Trip source</label>
         <select
           id="analysis-mode"
           value={mode}
@@ -76,31 +101,22 @@ export function TripForm({
             const next = event.target.value as 'sample' | 'live'
             setMode(next)
             if (next === 'live' && initial.mode !== 'live') {
-              const instant = new Date(Date.now() + 3600000)
-              const local = new Intl.DateTimeFormat('sv-SE', {
-                timeZone: zone,
-                year: 'numeric',
-                month: '2-digit',
-                day: '2-digit',
-                hour: '2-digit',
-                minute: '2-digit',
-                hourCycle: 'h23',
-              }).format(instant)
-              setDeparture(local.replace(' ', 'T'))
+              setDeparture(nextDeparture(zone))
+            }
+            if (next === 'sample' && curatedExample) {
+              setDeparture(initial.departure_local?.slice(0, 16) ?? '2026-10-10T06:00')
+              setLoad(String(initial.load_weight_lb))
+              setInterval(initial.checkpoint_interval_miles as 10 | 25 | 50)
+              setFold(initial.departure_fold == null ? '' : String(initial.departure_fold))
             }
           }}
         >
-          <option value="sample">Sample · offline fixtures</option>
-          <option value="live">Live · personal noncommercial assessment</option>
+          <option value="sample">Built-in example trip</option>
+          <option value="live">Plan a route</option>
         </select>
       </div>
       {mode === 'live' ? (
         <>
-          <p className="coverage-warning">
-            Open-Meteo rain + showers and 10 m wind. Snowfall uses the provider's fixed 7:1
-            approximation, approved for this assessment only. Forecast run time is unavailable. Not
-            for operational travel decisions.
-          </p>
           <LocationPicker
             label="Origin"
             value={origin}
@@ -119,18 +135,17 @@ export function TripForm({
       ) : (
         <>
           <p className="sample-disclosure">
-            Sample corridor and hypothetical weather. These results are for evaluation, not travel
-            decisions.
+            Explore Chicago–Atlanta with illustrative routes and weather.{' '}
+            {curatedExample &&
+              'Trip parameters are preset; select Plan a route to enter your own trip.'}
           </p>
           <div className="field">
             <label htmlFor="origin">Origin</label>
             <input id="origin" value="Chicago, Illinois" readOnly />
-            <small>Fixed sample place · no live geocoding</small>
           </div>
           <div className="field">
             <label htmlFor="destination">Destination</label>
             <input id="destination" value="Atlanta, Georgia" readOnly />
-            <small>Independently illustrated truck-route scenarios</small>
           </div>
         </>
       )}
@@ -146,6 +161,7 @@ export function TripForm({
               setFold('')
             }}
             required
+            readOnly={mode === 'sample' && curatedExample}
           />
         </div>
         <div className="field">
@@ -158,6 +174,7 @@ export function TripForm({
             value={load}
             onChange={(event) => setLoad(event.target.value)}
             required
+            readOnly={mode === 'sample' && curatedExample}
           />
         </div>
       </div>
@@ -251,7 +268,12 @@ export function TripForm({
         <summary>Time and truck assumptions</summary>
         <div className="field">
           <label htmlFor="fold">Repeated daylight-saving time</label>
-          <select id="fold" value={fold} onChange={(event) => setFold(event.target.value)}>
+          <select
+            id="fold"
+            value={fold}
+            disabled={mode === 'sample' && curatedExample}
+            onChange={(event) => setFold(event.target.value)}
+          >
             <option value="">Require a choice if ambiguous</option>
             <option value="0">First occurrence</option>
             <option value="1">Second occurrence</option>
@@ -260,7 +282,7 @@ export function TripForm({
         <p>
           Cargo is distinct from total vehicle weight.{' '}
           {mode === 'sample'
-            ? 'Sample routes have no validated road restrictions.'
+            ? 'Example routes are illustrative and have no validated road restrictions.'
             : 'Truck routing validates provider sections and warnings; it does not certify road safety or dock access.'}{' '}
           Stops, rest, and duty breaks are excluded from modeled driving time.
         </p>
@@ -275,6 +297,7 @@ export function TripForm({
                 name="interval"
                 value={value}
                 checked={interval === value}
+                disabled={mode === 'sample' && curatedExample}
                 onChange={() => setInterval(value)}
               />
               {value} mi
@@ -284,7 +307,7 @@ export function TripForm({
       </fieldset>
       {mode === 'sample' && (
         <div className="field">
-          <label htmlFor="scenario">Labeled sample scenario</label>
+          <label htmlFor="scenario">Weather scenario</label>
           <select
             id="scenario"
             value={scenario}
@@ -301,6 +324,7 @@ export function TripForm({
           {errorMessage}
         </p>
       )}
+      {mode === 'live' && privateAccessRequired && <PrivatePlanningAccess />}
       {mode === 'live' && (!originReady || !destinationReady) && (
         <p role="status">
           Select a matching location before analyzing. Draft search text is not a committed
@@ -316,10 +340,10 @@ export function TripForm({
         {pending
           ? mode === 'live'
             ? 'Acquiring routes and weather…'
-            : 'Analyzing sample…'
+            : 'Loading routes…'
           : mode === 'live'
-            ? 'Analyze live trip'
-            : 'Analyze sample trip'}
+            ? 'Analyze Route'
+            : 'Explore Routes'}
       </button>
     </form>
   )

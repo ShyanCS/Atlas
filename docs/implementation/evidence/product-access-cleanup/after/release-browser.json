@@ -1,0 +1,59 @@
+{
+  "status": "PASS",
+  "checks": [
+    {
+      "name": "Direct shell and controlled cold-start feedback 1440",
+      "status": "PASS"
+    },
+    {
+      "name": "Anonymous example, CSP, MapLibre and contextual data label 1440",
+      "status": "PASS"
+    },
+    {
+      "name": "All 49 positions, genuine frame contracts and immutable recommendation 1440",
+      "status": "PASS"
+    },
+    {
+      "name": "Live planning honestly restricted at the action 1440",
+      "status": "PASS"
+    },
+    {
+      "name": "Sources, safety and normal driver briefing 1440",
+      "status": "PASS"
+    },
+    {
+      "name": "Reload reuses example without a code or creation POST 1440",
+      "status": "PASS"
+    },
+    {
+      "name": "Direct shell and controlled cold-start feedback 390",
+      "status": "PASS"
+    },
+    {
+      "name": "Anonymous example, CSP, MapLibre and contextual data label 390",
+      "status": "PASS"
+    },
+    {
+      "name": "All 49 positions, genuine frame contracts and immutable recommendation 390",
+      "status": "PASS"
+    },
+    {
+      "name": "Live planning honestly restricted at the action 390",
+      "status": "PASS"
+    },
+    {
+      "name": "Sources, safety and normal driver briefing 390",
+      "status": "PASS"
+    },
+    {
+      "name": "Reload reuses example without a code or creation POST 390",
+      "status": "PASS"
+    }
+  ],
+  "errors": [],
+  "external_requests": [],
+  "provider_calls": 0,
+  "started_at": "2026-10-10T20:00:09.562Z",
+  "renderer": "Headless Chrome SwiftShader; not a physical GPU or hosted test",
+  "completed_at": "2026-10-10T20:01:14.655Z"
+}

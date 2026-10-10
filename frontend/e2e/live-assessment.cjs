@@ -54,9 +54,7 @@ let browser
       const start = performance.now()
       await page.goto(`${base}/?analysis=${id}`, { waitUntil: 'networkidle' })
       await page.getByTestId('recommendation').waitFor()
-      assert.ok(
-        await page.getByText('LIVE FORECAST · ASSESSMENT', { exact: true }).first().isVisible(),
-      )
+      assert.ok(await page.getByText('LIVE ANALYSIS', { exact: true }).first().isVisible())
       assert.ok(await page.getByText(/snowfall uses a disclosed fixed 7:1/).isVisible())
       await page.waitForFunction(
         () =>
@@ -85,7 +83,7 @@ let browser
         await page.keyboard.press('Enter')
         assert.equal(await route.getAttribute('aria-pressed'), 'true')
         await page.getByLabel('Requested forecast hour offset').fill('48')
-        await page.getByText(/forecast samples ·/).waitFor()
+        await page.getByText(/forecast locations ·/).waitFor()
         await page.getByRole('button', { name: 'Snow', exact: true }).click()
         await page.getByText(/Displayed: \+48h snow/).waitFor()
         const after = await page.request.get(`${base}/api/v1/analyses/${id}/`)

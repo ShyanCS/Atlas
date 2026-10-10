@@ -119,7 +119,7 @@ def test_expired_snapshot_purge_preserves_current_result_and_durable_budget():
     assert ProviderRequestBudget.objects.get(pk=BUDGET_ID).counts["routing"] == 1
 
 
-@override_settings(ATLAS_ASSESSMENT_ACCESS_HASH=ACCESS_HASH)
+@override_settings(ATLAS_ASSESSMENT_ACCESS_HASH=ACCESS_HASH, ATLAS_PUBLIC_EXAMPLES_ENABLED=False)
 def test_reviewer_access_health_preflight_and_credential_free_samples():
     client = Client()
     health = client.get("/api/v1/health/").json()
@@ -132,7 +132,11 @@ def test_reviewer_access_health_preflight_and_credential_free_samples():
     assert "Cache-Control" in response and response["Cache-Control"] == "no-store"
 
 
-@override_settings(ATLAS_ASSESSMENT_ACCESS_HASH=ACCESS_HASH, ATLAS_READ_REQUESTS_PER_MINUTE=2)
+@override_settings(
+    ATLAS_ASSESSMENT_ACCESS_HASH=ACCESS_HASH,
+    ATLAS_READ_REQUESTS_PER_MINUTE=2,
+    ATLAS_PUBLIC_EXAMPLES_ENABLED=False,
+)
 def test_read_throttle_survives_clients_and_resets_only_after_window():
     for _ in range(2):
         assert (
@@ -149,7 +153,11 @@ def test_read_throttle_survives_clients_and_resets_only_after_window():
     )
 
 
-@override_settings(ATLAS_ASSESSMENT_ACCESS_HASH=ACCESS_HASH, ATLAS_AUTH_FAILURES_PER_MINUTE=1)
+@override_settings(
+    ATLAS_ASSESSMENT_ACCESS_HASH=ACCESS_HASH,
+    ATLAS_AUTH_FAILURES_PER_MINUTE=1,
+    ATLAS_PUBLIC_EXAMPLES_ENABLED=False,
+)
 def test_access_failures_bounded_and_secret_never_echoed():
     response = Client().get("/api/v1/scenarios/", HTTP_AUTHORIZATION="Bearer secret-private-value")
     assert response.status_code == 401 and b"secret-private-value" not in response.content

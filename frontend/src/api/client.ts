@@ -10,6 +10,7 @@ import { isAnalysis, isRecord, isScenarios, isWeatherFrame } from './validation'
 import { getAssessmentAccessCode } from './access'
 
 export interface AnalysisApi {
+  getExample(scenario: TripInput['scenario'], signal?: AbortSignal): Promise<Analysis>
   getScenarios(signal?: AbortSignal): Promise<Scenarios>
   createAnalysis(input: TripInput, signal?: AbortSignal): Promise<Analysis>
   getAnalysis(id: string, signal?: AbortSignal): Promise<Analysis>
@@ -141,6 +142,18 @@ export class AtlasApi implements AnalysisApi {
 
   getScenarios(signal?: AbortSignal) {
     return this.request('/scenarios/', isScenarios, signal ? { signal } : {})
+  }
+  async getExample(scenario: TripInput['scenario'], signal?: AbortSignal) {
+    if (!['complete', 'partial', 'no-travel'].includes(scenario))
+      throw new ApiError({ code: 'INVALID_ARGUMENT', message: 'Choose an available example trip.' })
+    const result = await this.request(
+      `/examples/${scenario}/`,
+      isAnalysis,
+      signal ? { signal } : {},
+    )
+    if (result.mode !== 'sample' || !result.sample_data || result.scenario !== scenario)
+      throw invalidResponse()
+    return result
   }
   geocode(text: string) {
     return this.request(

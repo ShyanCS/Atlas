@@ -1,0 +1,51 @@
+{
+  "status": "PASS",
+  "scope": "Local verification only; not hosted acceptance",
+  "review_date_local": "2026-10-11",
+  "source_base_commit": "dae72a9dce3317efa3c899a28b86895e6b7c2900",
+  "postgresql_backend": {
+    "passed": 297,
+    "skipped": 0,
+    "seconds": 15.48,
+    "postgresql": "16.2",
+    "isolated": true
+  },
+  "sqlite_backend": {
+    "passed": 292,
+    "skipped": 4,
+    "subsequent_focused_public_access_passed": 22,
+    "subsequent_focused_skipped": 2
+  },
+  "frontend": {
+    "passed": 46,
+    "lint": "PASS",
+    "typecheck": "PASS",
+    "formatting": "PASS",
+    "build": "PASS",
+    "generated_contracts": "PASS"
+  },
+  "browser_regression": { "passed_groups": 13 },
+  "public_access_browser": {
+    "passed_groups": 12,
+    "hourly_positions": 49,
+    "variable_hour_responses": 147
+  },
+  "review_file_scan": {
+    "scanned": 74,
+    "known_secret_matches": 0,
+    "private_paths": 0
+  },
+  "documentation_links": { "checked": 49, "missing": 0 },
+  "built_asset_scan": {
+    "scanned": 14,
+    "known_secret_matches": 0,
+    "private_paths": 0
+  },
+  "provider_calls": 0,
+  "published": false,
+  "live_provider_flags_changed": false,
+  "historical_reports_changed": false,
+  "policy_and_provider_adapters_changed": false,
+  "render_cold_start": "Not measured; controlled 6.5-second local response delay only",
+  "gpu": "Chrome SwiftShader software rendering"
+}

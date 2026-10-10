@@ -72,7 +72,7 @@ if ATLAS_HOSTED:
     import re
 
     if not re.fullmatch(r"[a-f0-9]{64}", ATLAS_ASSESSMENT_ACCESS_HASH):
-        raise ImproperlyConfigured("Hosted mode requires a SHA-256 reviewer access-code hash.")
+        raise ImproperlyConfigured("Hosted mode requires a SHA-256 protected-access hash.")
     if not os.environ.get("ATLAS_CORS_ORIGINS") or any(
         not origin.startswith("https://") or "*" in origin for origin in CORS_ALLOWED_ORIGINS
     ):
@@ -116,6 +116,12 @@ ATLAS_ACQUISITION_SECONDS = min(
 ATLAS_READ_REQUESTS_PER_MINUTE = 300
 ATLAS_WRITE_REQUESTS_PER_MINUTE = 12
 ATLAS_AUTH_FAILURES_PER_MINUTE = 30
+ATLAS_PUBLIC_EXAMPLES_ENABLED = (
+    os.environ.get("ATLAS_PUBLIC_EXAMPLES_ENABLED", "0" if ATLAS_HOSTED else "1") == "1"
+)
+# Shared durable ceilings, not attacker-controlled IP/UUID buckets.
+ATLAS_PUBLIC_READS_PER_MINUTE = 240
+ATLAS_PUBLIC_BUILDS_PER_MINUTE = 3
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [],
     "DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.AllowAny"],
@@ -127,7 +133,7 @@ REST_FRAMEWORK = {
     "COERCE_DECIMAL_TO_STRING": True,
 }
 SPECTACULAR_SETTINGS = {
-    "TITLE": "Spotter Atlas assessment API",
+    "TITLE": "Spotter Atlas API",
     "DESCRIPTION": "Explicit sample/live sources and authoritative deterministic risk. Hosted live use requires separate permission switches.",
     "VERSION": "1.0.0",
     "SERVE_INCLUDE_SCHEMA": False,
@@ -137,7 +143,7 @@ SPECTACULAR_SETTINGS = {
             "AssessmentReviewer": {
                 "type": "http",
                 "scheme": "bearer",
-                "description": "Private reviewer code required on hosted API paths except health. Local access defaults open.",
+                "description": "Private bearer access for provider operations and private records; curated examples may be public. Local development defaults open.",
             }
         }
     },

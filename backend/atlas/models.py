@@ -20,6 +20,8 @@ class AnalysisSnapshot(models.Model):
     expires_at = models.DateTimeField(db_index=True)
     result = models.JSONField(default=dict)
     frame_data = models.JSONField(default=dict)
+    # Assigned only by the curated-example service. Existing/private rows stay null.
+    public_example_key = models.CharField(max_length=16, unique=True, null=True, editable=False)
 
 
 class ProviderRequestBudget(models.Model):

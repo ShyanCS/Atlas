@@ -76,8 +76,16 @@ docs/planning/
 docs/feasibility/
 docs/design/
 docs/decisions/
-docs/implementation/
+docs/implementation/*
+!docs/implementation/PRODUCT_EXPERIENCE_CLEANUP.md
+!docs/implementation/evidence/
+docs/implementation/evidence/*
+!docs/implementation/evidence/product-access-cleanup/
 frontend/e2e/results/
 frontend/*.tsbuildinfo
 *.egg-info/
 backend/*.sqlite3-*
+
+# Local Cloudflare CLI caches; authentication stays outside the repository.
+.wrangler/
+.neon

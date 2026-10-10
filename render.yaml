@@ -4,6 +4,7 @@ services:
     name: spotter-atlas-assessment-api
     runtime: python
     plan: free
+    region: virginia
     rootDir: backend
     buildCommand: bash scripts/render-build.sh
     startCommand: bash scripts/render-start.sh

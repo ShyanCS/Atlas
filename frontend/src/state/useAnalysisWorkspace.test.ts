@@ -22,6 +22,7 @@ function deferred<T>() {
 }
 function mockApi() {
   return {
+    getExample: vi.fn<AnalysisApi['getExample']>().mockResolvedValue(completeAnalysis),
     getScenarios: vi.fn<AnalysisApi['getScenarios']>().mockResolvedValue(scenariosFixture),
     createAnalysis: vi.fn<AnalysisApi['createAnalysis']>().mockResolvedValue(completeAnalysis),
     getAnalysis: vi.fn<AnalysisApi['getAnalysis']>().mockResolvedValue(completeAnalysis),

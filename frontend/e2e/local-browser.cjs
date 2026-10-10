@@ -72,18 +72,13 @@ async function open(page) {
 }
 async function analyzeDefault(page) {
   const start = performance.now()
-  const response = page.waitForResponse(
-    (response) =>
-      response.url().endsWith('/api/v1/analyses/') && response.request().method() === 'POST',
-  )
-  await page.getByRole('button', { name: 'Analyze default sample', exact: true }).click()
-  const api = await response
-  assert.equal(api.status(), 201)
+  const api = await page.request.get(new URL('/api/v1/examples/complete/', frontendUrl).href)
+  assert.equal(api.status(), 200)
   const analysis = await api.json()
   await page.getByTestId('recommendation').waitFor()
-  await page.getByText(/sample cells ·/).waitFor()
+  await page.getByText(/forecast locations ·/).waitFor()
   results.timings.push({
-    operation: 'POST sample + render first frame',
+    operation: 'Shared example GET + first frame',
     milliseconds: Math.round(performance.now() - start),
     analysis_status: analysis.status,
     routes: analysis.routes.length,
@@ -97,15 +92,17 @@ async function screenshot(page, name) {
   await page.screenshot({ path: path.join(output, name) })
 }
 async function submitScenario(page, scenario) {
-  await page.getByRole('button', { name: 'Edit sample trip', exact: true }).click()
-  await page.getByLabel('Labeled sample scenario', { exact: true }).selectOption(scenario)
+  await page.getByRole('button', { name: 'Edit trip', exact: true }).click()
+  await page.getByLabel('Trip source', { exact: true }).selectOption('sample')
+  await page.getByLabel('Weather scenario', { exact: true }).selectOption(scenario)
   const response = page.waitForResponse(
     (response) =>
-      response.url().endsWith('/api/v1/analyses/') && response.request().method() === 'POST',
+      response.url().endsWith(`/api/v1/examples/${scenario}/`) &&
+      response.request().method() === 'GET',
   )
-  await page.getByRole('button', { name: 'Analyze sample trip', exact: true }).click()
+  await page.getByRole('button', { name: 'Explore Routes', exact: true }).click()
   const api = await response
-  assert.equal(api.status(), 201)
+  assert.equal(api.status(), 200)
   const result = await api.json()
   await page.getByRole('dialog').waitFor({ state: 'hidden' })
   return result
@@ -123,10 +120,11 @@ async function submitScenario(page, scenario) {
     results.environment.browser_version = browser.version()
     const desktop = await context({ width: 1440, height: 900 })
     const page = desktop.page
-    await check('Initial state clearly labeled sample, no fabricated analysis', async () => {
+    await check('Direct anonymous workspace, one contextual example label', async () => {
       await open(page)
-      assert.equal(await page.getByTestId('recommendation').count(), 0)
-      assert.ok(await page.getByText('SAMPLE DATA', { exact: true }).isVisible())
+      await page.getByTestId('recommendation').waitFor()
+      assert.equal(await page.getByLabel('Private reviewer access code').count(), 0)
+      assert.ok(await page.getByText('Example trip', { exact: true }).isVisible())
       await screenshot(page, 'dispatch-empty.desktop.png')
     })
     let analysis
@@ -196,7 +194,7 @@ async function submitScenario(page, scenario) {
       },
     )
     await check('Native dialog keyboard focus and Escape return', async () => {
-      const trigger = page.getByRole('button', { name: 'Edit sample trip', exact: true })
+      const trigger = page.getByRole('button', { name: 'Edit trip', exact: true })
       await trigger.focus()
       await trigger.press('Enter')
       assert.ok(await page.getByRole('dialog').isVisible())
@@ -261,14 +259,23 @@ async function submitScenario(page, scenario) {
     await check(
       'Ambiguous/nonexistent local time requires backend resolution; input retained',
       async () => {
-        await page.getByRole('button', { name: 'Edit sample trip', exact: true }).click()
+        await page.getByRole('button', { name: 'Edit trip', exact: true }).click()
         await page.getByLabel('Local departure', { exact: true }).fill('2026-11-01T01:30')
-        let response = page.waitForResponse(
-          (response) =>
-            response.url().endsWith('/api/v1/analyses/') && response.request().method() === 'POST',
-        )
-        await page.getByRole('button', { name: 'Analyze sample trip', exact: true }).click()
-        let api = await response
+        const body = {
+          mode: 'sample',
+          scenario: 'complete',
+          origin: analysis.inputs.origin,
+          destination: analysis.inputs.destination,
+          origin_timezone: analysis.inputs.origin_timezone,
+          departure_local: '2026-11-01T01:30:00',
+          load_weight_lb: '24000',
+          checkpoint_interval_miles: 25,
+        }
+        const headers = { Authorization: 'Bearer authored-browser-reviewer-code-for-tests' }
+        let api = await page.request.post(new URL('/api/v1/analyses/', frontendUrl).href, {
+          data: body,
+          headers,
+        })
         assert.equal(api.status(), 400)
         assert.equal((await api.json()).error.code, 'DEPARTURE_TIME_AMBIGUOUS')
         assert.ok(await page.getByRole('dialog').isVisible())
@@ -277,12 +284,10 @@ async function submitScenario(page, scenario) {
           '2026-11-01T01:30',
         )
         await page.getByLabel('Local departure', { exact: true }).fill('2026-03-08T02:30')
-        response = page.waitForResponse(
-          (response) =>
-            response.url().endsWith('/api/v1/analyses/') && response.request().method() === 'POST',
-        )
-        await page.getByRole('button', { name: 'Analyze sample trip', exact: true }).click()
-        api = await response
+        api = await page.request.post(new URL('/api/v1/analyses/', frontendUrl).href, {
+          data: { ...body, departure_local: '2026-03-08T02:30:00' },
+          headers,
+        })
         assert.equal(api.status(), 400)
         assert.equal((await api.json()).error.code, 'DEPARTURE_TIME_NONEXISTENT')
         await screenshot(page, 'time-validation.desktop.png')
@@ -311,12 +316,13 @@ async function submitScenario(page, scenario) {
             }),
           })
         }
-        await page.route('**/api/v1/analyses/', delayedFailure)
-        await page.getByRole('button', { name: 'Edit sample trip', exact: true }).click()
-        await page.getByRole('button', { name: 'Analyze sample trip', exact: true }).click()
+        await page.route('**/api/v1/examples/complete/', delayedFailure)
+        await page.getByRole('button', { name: 'Edit trip', exact: true }).click()
+        await page.getByLabel('Trip source', { exact: true }).selectOption('sample')
+        await page.getByRole('button', { name: 'Explore Routes', exact: true }).click()
         try {
           assert.ok(
-            await page.getByRole('button', { name: 'Analyzing sample…', exact: true }).isDisabled(),
+            await page.getByRole('button', { name: 'Loading routes…', exact: true }).isDisabled(),
           )
         } finally {
           releaseFailure()
@@ -327,7 +333,7 @@ async function submitScenario(page, scenario) {
           .waitFor()
         assert.equal(await page.locator('.crumb').innerText(), before)
         await screenshot(page, 'quota-error.desktop.png')
-        await page.unroute('**/api/v1/analyses/', delayedFailure)
+        await page.unroute('**/api/v1/examples/complete/', delayedFailure)
         await page.keyboard.press('Escape')
       },
     )
@@ -422,7 +428,7 @@ async function submitScenario(page, scenario) {
         await mobile.page.getByRole('button', { name: 'Summary', exact: true }).click()
         assert.ok(
           await mobile.page
-            .getByRole('heading', { name: 'Route B preferred in this sample', exact: true })
+            .getByRole('heading', { name: 'Route B · recommended', exact: true })
             .isVisible(),
         )
         await screenshot(mobile.page, 'driver-summary.mobile.png')

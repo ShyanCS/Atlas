@@ -30,14 +30,12 @@ export function Icon({ name, className = '' }: { name: IconName; className?: str
 
 export function AtlasBrand() {
   return (
-    <div className="brand">
+    <div className="brand" aria-label="Spotter Atlas">
       <svg viewBox="0 0 30 30" aria-hidden="true">
         <path d="M3 25 14 4h3l10 21M9 18h14" stroke="#35d6c5" strokeWidth="2.1" fill="none" />
         <circle cx="15" cy="17" r="2.7" fill="#eff6f8" />
       </svg>
-      <span>
-        ATLAS<small>by Spotter</small>
-      </span>
+      <span>Spotter Atlas</span>
     </div>
   )
 }
