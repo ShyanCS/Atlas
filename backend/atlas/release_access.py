@@ -1,10 +1,11 @@
 """Shared reviewer bearer code plus bounded database-backed request windows.
 
 This is assessment access control, not user accounts or enterprise identity.
-Only three constant window rows exist; user input cannot create arbitrary keys.
+Only fixed window rows exist; user input cannot create arbitrary keys.
 """
 
 import hashlib
+import re
 import secrets
 from datetime import timedelta
 
@@ -52,11 +53,67 @@ class AssessmentAccessMiddleware:
     def __call__(self, request):
         access_hash = settings.ATLAS_ASSESSMENT_ACCESS_HASH
         if (
-            not access_hash
-            or not request.path.startswith("/api/")
+            not request.path.startswith("/api/")
             or request.path == "/api/v1/health/"
             or request.method == "OPTIONS"
         ):
+            return self.get_response(request)
+        try:
+            public = False
+            charged = False
+            if settings.ATLAS_PUBLIC_EXAMPLES_ENABLED and request.method in {"GET", "HEAD"}:
+                public = request.path == "/api/v1/scenarios/" or bool(
+                    re.fullmatch(r"/api/v1/examples/(complete|partial|no-travel)/", request.path)
+                )
+                match = re.fullmatch(
+                    r"/api/v1/analyses/([0-9a-fA-F-]{36})/(frames/)?", request.path
+                )
+                if match:
+                    retry = admit("public-read", settings.ATLAS_PUBLIC_READS_PER_MINUTE)
+                    if retry:
+                        return denial(
+                            request,
+                            "PUBLIC_REQUEST_LIMIT",
+                            "Too many requests. Try again shortly.",
+                            429,
+                            retry,
+                        )
+                    charged = True
+                    # Validate UUID before ORM conversion; malformed IDs remain protected.
+                    import uuid
+
+                    from atlas.services.examples import public_example_query
+
+                    try:
+                        identity = uuid.UUID(match[1])
+                    except ValueError:
+                        identity = None
+                    public = bool(identity and public_example_query().filter(pk=identity).exists())
+            if public:
+                retry = (
+                    None
+                    if charged
+                    else admit("public-read", settings.ATLAS_PUBLIC_READS_PER_MINUTE)
+                )
+                if retry:
+                    return denial(
+                        request,
+                        "PUBLIC_REQUEST_LIMIT",
+                        "Too many requests. Try again shortly.",
+                        429,
+                        retry,
+                    )
+                return self.get_response(request)
+        except DatabaseError:
+            return denial(
+                request,
+                "ASSESSMENT_STORAGE_UNAVAILABLE",
+                "The workspace is waking or unavailable. Try again shortly.",
+                503,
+            )
+        # Local loopback development retains its explicitly open provider workflow.
+        # Hosted startup still mandates the private hash; it cannot use this bypass.
+        if not access_hash:
             return self.get_response(request)
         authorization = request.headers.get("Authorization", "")
         token = authorization[7:] if authorization.startswith("Bearer ") else ""
@@ -74,7 +131,7 @@ class AssessmentAccessMiddleware:
                     else denial(
                         request,
                         "ASSESSMENT_ACCESS_REQUIRED",
-                        "Enter the private reviewer access code.",
+                        "This operation is restricted on this deployment. You can explore the example trip.",
                         401,
                     )
                 )
@@ -89,7 +146,7 @@ class AssessmentAccessMiddleware:
                 return denial(
                     request,
                     "ASSESSMENT_THROTTLED",
-                    "The assessment request limit was reached. No provider retry was made.",
+                    "The request limit was reached. Try again shortly.",
                     429,
                     retry,
                 )
@@ -97,7 +154,7 @@ class AssessmentAccessMiddleware:
             return denial(
                 request,
                 "ASSESSMENT_STORAGE_UNAVAILABLE",
-                "The assessment database is waking or unavailable. No provider request was made.",
+                "The workspace is waking or unavailable. Try again shortly.",
                 503,
             )
         return self.get_response(request)

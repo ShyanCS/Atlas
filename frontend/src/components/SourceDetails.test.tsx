@@ -6,7 +6,7 @@ import { completeAnalysis } from '../test/fixtures'
 describe('source disclosures survive product copy refinement', () => {
   it('clearly identifies illustrative demo data', () => {
     render(<SourceDetails analysis={completeAnalysis} route={completeAnalysis.routes[0]!} />)
-    expect(screen.getByText(/Demo Mode · illustrative weather/)).toBeVisible()
+    expect(screen.getByText(/example trip uses illustrative/)).toBeVisible()
     expect(screen.getByText(/not live forecasts/)).toBeVisible()
   })
 

@@ -2044,3 +2044,14 @@ small {
   font-size: 28px;
   line-height: 1.2;
 }
+
+.example-indicator {
+  display: inline-block;
+  margin-top: 6px;
+  font-size: 12px;
+  line-height: 1.4;
+  color: #c6d2de;
+  padding: 2px 8px;
+  border: 1px solid #354554;
+  border-radius: 4px;
+}

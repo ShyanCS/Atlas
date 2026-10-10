@@ -405,20 +405,26 @@ def build_frame_data(inputs, geometry, model_run, retrieved_at):
     }
 
 
-def create_analysis(inputs):
+def create_analysis(inputs, *, public_example_key=None):
     if inputs.get("mode") in {"live", "actual"}:
+        if public_example_key is not None:
+            raise AtlasError("VALIDATION_ERROR", "Examples cannot acquire provider data.")
         from atlas.services.live import create_live_analysis
 
         return create_live_analysis(inputs)
     now = django_timezone.now()
     with ADMISSION_LOCK, transaction.atomic():
         AnalysisSnapshot.objects.filter(expires_at__lte=now).delete()
-        if AnalysisSnapshot.objects.count() >= settings.ATLAS_MAX_LOCAL_SNAPSHOTS:
+        if public_example_key is None and (
+            AnalysisSnapshot.objects.filter(public_example_key__isnull=True).count()
+            >= settings.ATLAS_MAX_LOCAL_SNAPSHOTS
+        ):
             raise AtlasError(
                 "SAMPLE_ADMISSION_LIMIT", "The local sample snapshot limit is reached.", status=429
             )
         snapshot = AnalysisSnapshot.objects.create(
-            expires_at=now + timedelta(hours=settings.ATLAS_SNAPSHOT_RETENTION_HOURS)
+            expires_at=now + timedelta(hours=settings.ATLAS_SNAPSHOT_RETENTION_HOURS),
+            public_example_key=public_example_key,
         )
     snapshot.status = AnalysisSnapshot.Status.RUNNING
     snapshot.started_at = django_timezone.now()

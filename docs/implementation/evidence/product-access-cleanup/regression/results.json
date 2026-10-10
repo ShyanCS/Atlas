@@ -1,0 +1,107 @@
+{
+  "started_at": "2026-10-10T19:21:00.772Z",
+  "environment": {
+    "browser": "Installed Google Chrome, headless",
+    "rendering": "SwiftShader software WebGL; not physical GPU validation",
+    "frontend": "http://127.0.0.1:4177",
+    "backend": "http://127.0.0.1:8007",
+    "sample_only": true,
+    "browser_version": "155.0.8059.39"
+  },
+  "checks": [
+    {
+      "name": "Direct anonymous workspace, one contextual example label",
+      "status": "PASS",
+      "milliseconds": 3703
+    },
+    {
+      "name": "Actual Django analysis and first frame, stable backend preference",
+      "status": "PASS",
+      "milliseconds": 462
+    },
+    {
+      "name": "Inspection selection cannot change recommendation; checkpoint selection consistent",
+      "status": "PASS",
+      "milliseconds": 2580
+    },
+    {
+      "name": "Keyboard 0–48-hour timeline, separate raw/arrival legends, Unknown snowfall",
+      "status": "PASS",
+      "milliseconds": 2752
+    },
+    {
+      "name": "Native dialog keyboard focus and Escape return",
+      "status": "PASS",
+      "milliseconds": 1595
+    },
+    {
+      "name": "Incomplete forecast coverage withholds recommendation and shows Unknown",
+      "status": "PASS",
+      "milliseconds": 4700
+    },
+    {
+      "name": "Known No Travel never becomes an eligible recommendation",
+      "status": "PASS",
+      "milliseconds": 3922
+    },
+    {
+      "name": "Ambiguous/nonexistent local time requires backend resolution; input retained",
+      "status": "PASS",
+      "milliseconds": 3311
+    },
+    {
+      "name": "Backend analysis failure retains prior immutable result; loading and quota states",
+      "status": "PASS",
+      "milliseconds": 7779
+    },
+    {
+      "name": "Reduced motion computed styles and simulated WebGL context loss",
+      "status": "PASS",
+      "milliseconds": 2830
+    },
+    {
+      "name": "Mobile 390×844 layout, all routes reachable through same-state dialog",
+      "status": "PASS",
+      "milliseconds": 5366
+    },
+    {
+      "name": "WebGL failure preserves route cards, diagram and keyboard/list alternatives",
+      "status": "PASS",
+      "milliseconds": 3946
+    },
+    {
+      "name": "No external network resources or uncaught browser errors",
+      "status": "PASS",
+      "milliseconds": 0
+    }
+  ],
+  "errors": [],
+  "console": [
+    {
+      "type": "error",
+      "text": "Failed to load resource: the server responded with a status of 429 (Too Many Requests)"
+    }
+  ],
+  "external_requests": [],
+  "timings": [
+    {
+      "operation": "Shared example GET + first frame",
+      "milliseconds": 165,
+      "analysis_status": "complete",
+      "routes": 3
+    },
+    {
+      "operation": "Shared example GET + first frame",
+      "milliseconds": 174,
+      "analysis_status": "complete",
+      "routes": 3
+    },
+    {
+      "operation": "Shared example GET + first frame",
+      "milliseconds": 166,
+      "analysis_status": "complete",
+      "routes": 3
+    }
+  ],
+  "completed_at": "2026-10-10T19:21:46.888Z"
+}

@@ -28,10 +28,19 @@ const dialogTitles = {
 export default function App() {
   const workspace = useAnalysisWorkspace()
   const { restore } = workspace
-  const { state, analyze, selectRoute, selectCheckpoint, requestFrame, setMode, markStale } =
-    workspace
+  const {
+    state,
+    analyze,
+    loadExample,
+    selectRoute,
+    selectCheckpoint,
+    requestFrame,
+    setMode,
+    markStale,
+  } = workspace
   const [dialog, setDialog] = useState<DialogKind>(null)
-  const initialized = useRef<string | null>(null)
+  const initialized = useRef<typeof state.analysis>(null)
+  const exampleStarted = useRef(false)
   const analysis = state.analysis
   const live = analysis?.mode === 'live'
   const selected = analysis?.routes.find((route) => route.id === state.selectedRouteId)
@@ -69,8 +78,19 @@ export default function App() {
   }, [restore])
 
   useEffect(() => {
-    if (!analysis || initialized.current === analysis.id) return
-    initialized.current = analysis.id
+    if (
+      exampleStarted.current ||
+      !workspace.scenarios ||
+      new URLSearchParams(window.location.search).has('analysis')
+    )
+      return
+    exampleStarted.current = true
+    void loadExample()
+  }, [workspace.scenarios, loadExample])
+
+  useEffect(() => {
+    if (!analysis || initialized.current === analysis) return
+    initialized.current = analysis
     const candidate =
       analysis.routes.find((route) => route.id === analysis.recommendation.route_id) ??
       analysis.routes[0]
@@ -99,16 +119,9 @@ export default function App() {
             <a href="#main" className="active" aria-current="page">
               Dispatch
             </a>
-            <span title="Later milestone">
-              Trip Intelligence <small>Later</small>
-            </span>
-            <span title="Later milestone">
-              Departure Lab <small>Later</small>
-            </span>
           </nav>
         </div>
         <div className="top-right">
-          <span className="sample">{live ? 'LIVE ANALYSIS' : 'DEMO MODE'}</span>
           <span className="mono quiet desktop-only">WEATHER INTELLIGENCE</span>
         </div>
       </header>
@@ -124,17 +137,18 @@ export default function App() {
                 ? `${analysis.inputs.origin.name} → ${analysis.inputs.destination.name}`
                 : 'Chicago → Atlanta'}
             </h1>
+            {analysis?.sample_data && <span className="example-indicator">Example trip</span>}
           </div>
           <div className="workspace-meta">
             <div className="snapshot desktop-only">
               <strong>
                 {analysis
-                  ? `${live ? 'Live analysis' : 'Demo analysis'} · ${datedClock(analysis.completed_at ?? analysis.created_at)}`
-                  : 'Plan a trip or explore the demo'}
+                  ? `Updated · ${datedClock(analysis.completed_at ?? analysis.created_at)}`
+                  : 'Connecting to route intelligence'}
               </strong>
               <span>
                 {analysis
-                  ? `${analysis.policy_version} · ${state.isStale ? 'previous inputs' : 'immutable result'}`
+                  ? `${state.isStale ? 'Previous trip inputs' : 'Checkpoint weather at arrival'}`
                   : 'Route planning · weather intelligence'}
               </span>
             </div>
@@ -144,7 +158,7 @@ export default function App() {
               onClick={() => setDialog('summary')}
             >
               <Icon name="truck" />
-              Driver summary
+              Driver briefing
             </button>
             <button
               className="btn mobile-route-button"
@@ -154,21 +168,21 @@ export default function App() {
               {analysis?.routes.length ?? 0} routes
             </button>
             <button className="btn ghost desktop-only" onClick={openTrip}>
-              New trip <Icon name="arrow" />
+              Plan Route <Icon name="arrow" />
             </button>
           </div>
         </div>
-        <p className="global-disclosure">
-          {live
-            ? 'Live Analysis · provider forecasts with approximate snowfall. Review sources and conditions before travel.'
-            : 'Demo Mode · illustrative routes and weather, ready to explore. These are not live travel conditions.'}
-        </p>
         <AnalysisStatus
-          pending={workspace.analysisPending}
+          pending={workspace.analysisPending || workspace.loadingScenarios}
           error={workspace.error?.message}
           stale={state.isStale}
           noRecommendation={!!analysis && !analysis.recommendation.route_id}
-          onRetry={openTrip}
+          onRetry={() => {
+            if (!analysis) {
+              if (workspace.scenarios) void loadExample()
+              else void workspace.reloadScenarios()
+            } else openTrip()
+          }}
         />
         <div className={`canvas-layout ${analysis ? '' : 'no-analysis'}`}>
           <div className="rail">
@@ -212,19 +226,17 @@ export default function App() {
               <div className="trip-actions">
                 <button className="btn primary" onClick={openTrip}>
                   <Icon name="refresh" />
-                  {analysis ? 'Edit & analyze' : 'Plan a trip'}
+                  Plan Route
                 </button>
                 <button className="btn" onClick={() => setDialog('sources')} disabled={!analysis}>
                   <Icon name="info" />
-                  Assumptions
+                  Sources
                 </button>
               </div>
             </section>
             <div className="rail-heading desktop-only">
               <span className="eyebrow">Route comparison</span>
-              <span>
-                {analysis?.routes.length ?? 0} {live ? 'truck candidates' : 'demo routes'}
-              </span>
+              <span>{analysis?.routes.length ?? 0} alternatives</span>
             </div>
             <section className="route-list" aria-label="Evaluated route candidates">
               {analysis?.routes
@@ -244,26 +256,23 @@ export default function App() {
               <section className="panel empty-card">
                 <Icon name="compass" />
                 <h2>Plan. Understand. Dispatch.</h2>
-                <p>
-                  Explore three demo routes and see how weather exposure shapes the recommendation.
-                </p>
+                <p>Compare route alternatives, checkpoint weather and risk exposure.</p>
                 <button
                   className="btn primary wide"
                   onClick={() => {
-                    void analyze(sampleDraft)
+                    void loadExample()
                   }}
-                  disabled={workspace.analysisPending}
+                  disabled={workspace.analysisPending || workspace.loadingScenarios}
                 >
-                  {workspace.analysisPending ? 'Analyzing demo…' : 'Explore Demo'}
+                  {workspace.analysisPending || workspace.loadingScenarios
+                    ? 'Loading routes…'
+                    : 'Explore Routes'}
                 </button>
               </section>
             )}
             <p className="rail-note">
               <Icon name="info" />
-              Driving-time estimates exclude stops and duty breaks.{' '}
-              {live
-                ? 'Provider truck compatibility is not a road-safety guarantee.'
-                : 'Demo routes are illustrative; verify road restrictions before travel.'}
+              Driving-time estimates exclude stops and duty breaks.
             </p>
             <section className="ranking-rule panel">
               <strong>Recommendation priority</strong>
@@ -350,7 +359,7 @@ export default function App() {
               </a>
             </>
           ) : (
-            'DEMO MODE'
+            'Spotter Atlas'
           )}{' '}
           · NATURAL EARTH GEOGRAPHY · VERSIONED POLICY RESULTS
         </span>
@@ -402,12 +411,16 @@ export default function App() {
         {dialog === 'trip' && (
           <TripForm
             key={analysis?.id ?? 'draft'}
-            initial={analysis ? analysisToTripInput(analysis) : sampleDraft}
+            initial={analysis?.mode === 'live' ? analysisToTripInput(analysis) : sampleDraft}
+            curatedExample
+            startWithLive
             pending={workspace.analysisPending}
             onSubmit={(input) => {
-              void analyze(input).then((result) => {
-                if (result) setDialog(null)
-              })
+              void (input.mode === 'sample' ? loadExample(input.scenario) : analyze(input)).then(
+                (result) => {
+                  if (result) setDialog(null)
+                },
+              )
             }}
             errorMessage={workspace.error?.message}
             onDirty={markStale}
@@ -448,13 +461,16 @@ export default function App() {
         )}
         {dialog === 'summary' && analysis && (
           <div className="driver-summary">
-            <span className="sample">{live ? 'LIVE ANALYSIS' : 'DEMO MODE'}</span>
             <h2>
               {preferred
                 ? `Route ${preferred.code} · recommended`
                 : 'No verified travel recommendation'}
             </h2>
-            <p>{analysis.recommendation.reason}</p>
+            <p>
+              {preferred
+                ? 'Eligible route with the least Severe exposure, then High exposure, average risk and driving time.'
+                : analysis.recommendation.reason}
+            </p>
             {preferred && (
               <>
                 <p>
@@ -477,7 +493,7 @@ export default function App() {
             <p className="sample-disclosure">
               {live
                 ? 'Review while parked. Forecast uncertainty and approximate snowfall require judgment; this briefing is not a navigation or safety guarantee.'
-                : 'Demo briefing · illustrative conditions and routes. Review while parked; do not use demo values for travel decisions.'}
+                : 'This briefing uses the example trip’s illustrative conditions. Review while parked; forecasts do not guarantee road safety.'}
             </p>
           </div>
         )}

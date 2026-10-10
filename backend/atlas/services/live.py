@@ -48,7 +48,7 @@ def require_live():
     if not live_available():
         raise AtlasError(
             "LIVE_MODE_UNAVAILABLE",
-            "Hosted live access is disabled pending this assessment's public weather and routing release checks. Sample mode remains available."
+            "Route planning is not enabled on this deployment. You can explore the example trip."
             if settings.ATLAS_HOSTED
             else "Enable the explicitly noncommercial assessment source policy and server-side routing key to use live mode.",
             status=503,

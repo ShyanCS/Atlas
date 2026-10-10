@@ -425,6 +425,7 @@ class ScenariosSerializer(serializers.Serializer):
 
 class HealthSerializer(serializers.Serializer):
     assessment_access_required = serializers.BooleanField()
+    public_examples_available = serializers.BooleanField()
     status = serializers.ChoiceField(choices=["ok"])
     mode = serializers.ChoiceField(choices=["sample"])
     live_available = serializers.BooleanField()

@@ -32,7 +32,7 @@ export function AnalysisStatus({
         : 'No verified travel recommendation'
   const message = pending
     ? slow
-      ? 'Still processing. A free backend or database may need time to wake. No automatic provider retry is made; a recommendation appears only after completion.'
+      ? 'Connecting to the workspace. The server may take about a minute to wake; your inputs are retained.'
       : 'Matching checkpoint weather and comparing route exposure. Your recommendation appears when analysis completes.'
     : (error ??
       (stale

@@ -8,20 +8,20 @@ Spotter Atlas brings truck-aware route planning, hourly weather forecasts and ro
 
 [Features](#key-features) · [Getting started](#getting-started) · [Architecture](#architecture) · [Data sources](#data-sources-and-limitations) · [Roadmap](#roadmap)
 
-**[Open the hosted assessment demo](https://spotter-atlas-assessment.pages.dev/)** — reviewer access required. The hosted release uses labeled sample scenarios; live-provider access remains disabled. [Deployment verification](docs/deployment/AUTOMATED_DEPLOYMENT_STATUS.md) · [Hosted screenshots and evidence](docs/deployment/evidence/2026-10-10/README.md)
+**[Open Spotter Atlas](https://spotter-atlas-assessment.pages.dev/)** · [Deployment verification](docs/deployment/AUTOMATED_DEPLOYMENT_STATUS.md) · [Public-access update](docs/implementation/PRODUCT_EXPERIENCE_CLEANUP.md)
 
 ## Product preview
 
 ### Dispatch Canvas
 
-![Spotter Atlas hosted desktop Dispatch Canvas](docs/deployment/evidence/2026-10-10/browser/dispatch-ready-1440x900.png)
+![Spotter Atlas desktop Dispatch Canvas](docs/implementation/evidence/product-access-cleanup/after/dispatch-1440.png)
 
-_Route comparison, arrival-time risk segments, checkpoint inspection and the forecast timeline. Preview uses the included demo trip._
+_Route alternatives, arrival-time risk segments, checkpoint inspection and the forecast timeline, shown with the built-in example trip. Preview of the local update awaiting publication._
 
 ### Mobile experience
 
 <p align="center">
-  <img src="docs/deployment/evidence/2026-10-10/browser/dispatch-ready-390x844.png" width="390" alt="Spotter Atlas hosted mobile interface showing a demo trip" />
+  <img src="docs/implementation/evidence/product-access-cleanup/after/dispatch-390.png" width="390" alt="Spotter Atlas mobile interface showing the built-in example trip" />
 </p>
 
 _A focused mobile view of the trip, preferred route and operational map, with quick access to forecasts and the driver briefing._
@@ -66,15 +66,15 @@ Django calculates route progress, checkpoint arrival times, weather classificati
 | Infrastructure | Cloudflare Pages Free, Render Free and Neon Free                             |
 | Verification   | pytest, Vitest, Testing Library, Playwright, Ruff, ESLint and GitHub Actions |
 
-The reviewer-protected Demo Mode release is hosted on Cloudflare Pages, Render and Neon. PostgreSQL persistence, restart recovery, three-route sample ranking and all 49 forecast positions were verified. The live workflow is implemented and previously tested locally; it is not enabled or claimed as verified on the hosted release. Free backend cold starts can delay initial access.
+Cloudflare Pages serves the frontend, Render runs Django and Neon stores immutable analyses. Free backend cold starts can delay initial access. Current publication status and live-source restrictions are documented in [Data sources and limitations](#data-sources-and-limitations).
 
 ## Getting started
 
-### Explore the demo
+### Explore routes
 
-The built-in Chicago–Atlanta scenarios let you explore complete weather coverage, missing snowfall and No Travel conditions without external API credentials.
+The built-in Chicago–Atlanta example opens automatically and lets you explore route alternatives, checkpoint weather and the timeline without external API credentials. The trip heading identifies illustrative data; Source Details explains its provenance. Additional weather scenarios show missing snowfall and No Travel conditions.
 
-For the hosted demo, request the private reviewer code from the repository owner, paste it into **Private reviewer access code**, then unlock the workspace. The code is an assessment access gate, not a provider API key or a personal account password. It stays in tab memory and must be entered again after reloading. Share it privately with authorized reviewers; never place it in GitHub, screenshots, URLs or frontend configuration. Local development does not require a code unless an access hash is configured.
+Custom route planning uses committed endpoints, departure time, cargo load and a separate physical truck profile. Public example parameters are preset; live acquisition and private records retain server-side authorization and provider caps.
 
 Requirements: **Python 3.12** and **Node 24.15+ in the 24.x line** (verified with 24.19.0).
 
@@ -134,7 +134,7 @@ npm ci --ignore-scripts
 npm run dev
 ```
 
-Open [Spotter Atlas locally](http://127.0.0.1:5173/) and choose **Explore Demo**. Use the trip form to change cargo weight, checkpoint spacing or the demo scenario.
+Open [Spotter Atlas locally](http://127.0.0.1:5173/). The example trip loads directly. Choose **Plan Route** to enter your own trip or select a different built-in weather scenario.
 
 ### Configure live integrations
 
@@ -191,7 +191,8 @@ Spotter Atlas is a modular monolith. Provider adapters normalize routing and wea
 
 - Open-Meteo access is subject to its [provider terms](https://open-meteo.com/en/terms), including noncommercial restrictions on the current Free access. The current integration scope is a personal noncommercial assessment demonstration.
 - Provider-reported snowfall is model-derived and approximate, using a fixed 7:1 snow/water relationship. Forecast initialization is not exposed; service-hourly values are not claimed as verified native model intervals.
-- Demo scenarios are illustrative. The application visibly distinguishes **Demo Mode** from **Live Analysis** and preserves source attribution and missing-data warnings.
+- Built-in example routes and weather values are illustrative. Their contextual **Example trip** indicator and source panel distinguish them from provider-backed results. Null weather remains Unknown.
+- The direct-entry public-example update is prepared locally and awaits approval to push and deploy. The current hosted revision still has its earlier private access gate. Hosted live-provider operations remain disabled; the previously verified local live workflow does not establish hosted live availability.
 - Route/weather guidance does not guarantee road safety, truck-road legality or dock access. Driving ETAs exclude stops and duty breaks.
 - Corridor overlays show sampled forecast locations, not native model-cell boundaries. Coverage and available alternatives can vary by route and forecast window.
 - Hosted deployment and public live-provider use have separate activation requirements. See [security](SECURITY.md) and the [release checklist](docs/deployment/SETUP.md).

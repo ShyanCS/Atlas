@@ -43,6 +43,7 @@ class HealthView(APIView):
                 {
                     "status": "ok",
                     "assessment_access_required": bool(settings.ATLAS_ASSESSMENT_ACCESS_HASH),
+                    "public_examples_available": settings.ATLAS_PUBLIC_EXAMPLES_ENABLED,
                     "mode": "sample",
                     "live_available": live_available(),
                     "policy_version": POLICY_VERSION,
@@ -83,8 +84,8 @@ class ScenariosView(APIView):
             "scenarios": [
                 {
                     "id": "complete",
-                    "label": "Complete sample",
-                    "description": "Three authored routes with complete checkpoint conditions.",
+                    "label": "Complete coverage",
+                    "description": "Three illustrative routes with complete checkpoint conditions.",
                 },
                 {
                     "id": "partial",
@@ -120,6 +121,16 @@ class AnalysisCreateView(APIView):
         serializer.is_valid(raise_exception=True)
         snapshot = create_analysis(serializer.validated_data)
         return Response(AnalysisSerializer(snapshot.result).data, status=201)
+
+
+class ExampleView(APIView):
+    @extend_schema(responses={200: AnalysisSerializer, **ERRORS}, operation_id="getExample")
+    def get(self, request, scenario):
+        from atlas.services.examples import example_analysis
+
+        if request.query_params or request.body:
+            raise AtlasError("VALIDATION_ERROR", "Example routes use preset trip parameters.")
+        return Response(AnalysisSerializer(example_analysis(scenario).result).data)
 
 
 class AnalysisDetailView(APIView):

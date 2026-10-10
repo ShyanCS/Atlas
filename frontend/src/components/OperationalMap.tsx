@@ -488,7 +488,7 @@ export function OperationalMap(props: Props) {
       const detail = document.createElement('span')
       detail.textContent = `Mile ${number(checkpoint.distance_mi)} · ${clock(checkpoint.eta_utc, props.analysis?.mode === 'live' ? 'UTC' : 'America/New_York')}`
       const value = document.createElement('span')
-      value.textContent = `${number(checkpoint.measurements.wind.value)} mph ${checkpoint.measurements.wind.provenance.kind === 'synthetic' ? 'demo' : 'forecast'} wind`
+      value.textContent = `${number(checkpoint.measurements.wind.value)} mph wind`
       node.append(title, detail, value)
       const location: [number, number] = [
         Number(checkpoint.coordinate.longitude),
@@ -518,9 +518,7 @@ export function OperationalMap(props: Props) {
   return (
     <section
       className="map-box"
-      aria-label={
-        props.analysis?.mode === 'live' ? 'Operational live route map' : 'Operational demo map'
-      }
+      aria-label="Operational route map"
       data-testid="operational-map"
       data-renderer={failed ? 'fallback' : ready ? 'maplibre' : 'loading'}
       data-visual-ready={failed || visualReady}
@@ -562,7 +560,7 @@ export function OperationalMap(props: Props) {
         </button>
         <button
           className="btn icon-only"
-          aria-label={props.analysis?.mode === 'live' ? 'Fit live trip' : 'Fit demo trip'}
+          aria-label="Fit trip"
           disabled={failed}
           onClick={() => mapRef.current && fit(mapRef.current, props.analysis)}
         >
@@ -580,14 +578,14 @@ export function OperationalMap(props: Props) {
         <div className="map-empty">
           <Icon name="map" />
           <h2>A clearer view of the road ahead.</h2>
-          <p>Explore Demo or plan a trip to compare routes and inspect weather along the way.</p>
+          <p>Compare routes and inspect weather along the way.</p>
         </div>
       )}
       <div className="map-bottom">
         <p>
-          {props.analysis?.mode === 'live'
-            ? 'LIVE FORECAST · NOT NAVIGATION'
-            : 'DEMO ROUTES & WEATHER · NOT NAVIGATION'}
+          {props.mode === 'arrival-risk'
+            ? 'CHECKPOINT WEATHER AT ARRIVAL'
+            : 'WEATHER AT SELECTED HOUR'}
         </p>
         {props.mode === 'arrival-risk' ? (
           <div className="map-legend" aria-label="Arrival-time risk legend">

@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  title: Spotter Atlas assessment API
+  title: Spotter Atlas API
   version: 1.0.0
   description: Explicit sample/live sources and authoritative deterministic risk.
     Hosted live use requires separate permission switches.
@@ -177,6 +177,74 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Frame'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: ''
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: ''
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: ''
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: ''
+        '410':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: ''
+        '413':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: ''
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: ''
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: ''
+  /api/v1/examples/{scenario}/:
+    get:
+      operationId: getExample
+      parameters:
+      - in: path
+        name: scenario
+        schema:
+          type: string
+        required: true
+      tags:
+      - examples
+      security:
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Analysis'
           description: ''
         '400':
           content:
@@ -797,6 +865,8 @@ components:
       properties:
         assessment_access_required:
           type: boolean
+        public_examples_available:
+          type: boolean
         status:
           $ref: '#/components/schemas/HealthStatusEnum'
         mode:
@@ -812,6 +882,7 @@ components:
       - live_available
       - mode
       - policy_version
+      - public_examples_available
       - status
       - version
     HealthStatusEnum:
@@ -1315,5 +1386,5 @@ components:
     AssessmentReviewer:
       type: http
       scheme: bearer
-      description: Private reviewer code required on hosted API paths except health.
-        Local access defaults open.
+      description: Private bearer access for provider operations and private records;
+        curated examples may be public. Local development defaults open.

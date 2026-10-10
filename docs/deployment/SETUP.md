@@ -4,6 +4,10 @@ The reviewer-protected Demo Mode release was published with separate user approv
 
 ## Before publishing
 
+### Prepared direct-entry update — approval pending
+
+The product/access cleanup is verified locally in [the implementation report](../implementation/PRODUCT_EXPERIENCE_CLEANUP.md); it is not deployed. Publish backend/frontend together only after explicit approval. Set `ATLAS_PUBLIC_EXAMPLES_ENABLED=1` on the new backend revision to expose just the three shared curated examples, keeping the private access hash, live flags at 0 and provider keys absent. The current hosted build remains gated until that coordinated release. Do not clear the private hash to make examples public. Existing/private saved analyses retain authorization.
+
 1. Obtain the user's explicit deployment/repository authorization and select the repository and three projects. Share repository access with the employer as required; public visibility is not assumed.
 2. Confirm the intended hosted assessment's Open-Meteo use is permitted, and the user's TomTom public-use/display release check is complete. No account agreements or private keys need to be uploaded to this workspace. Keep both public permission switches **0** until those checks are confirmed.
 3. Use only Free plans. Do not attach payment methods, enable automatic paid overages, upgrade plans or accept a paid substitute. If a setup flow requires a paid commitment, stop. Confirm actual account quotas in each dashboard; source preparation does not verify an account's billing configuration.

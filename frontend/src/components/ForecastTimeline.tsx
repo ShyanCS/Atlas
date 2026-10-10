@@ -107,9 +107,9 @@ export function ForecastTimeline({
         </div>
         <span className="frame-status" role="status">
           {pending
-            ? `Preparing requested ${analysis.sample_data ? 'demo' : 'forecast'} frame…`
+            ? 'Loading forecast frame…'
             : frame
-              ? `${frame.coverage.known_cells}/${frame.coverage.total_cells} ${analysis.sample_data ? 'demo cells' : 'forecast locations'} · ${frame.acquisition_status}`
+              ? `${frame.coverage.known_cells}/${frame.coverage.total_cells} forecast locations · ${frame.acquisition_status}`
               : 'Choose a forecast hour'}
         </span>
       </div>
@@ -127,12 +127,6 @@ export function ForecastTimeline({
           : 'Raw-variable colors describe one clock time.'}{' '}
         Scrubbing never changes the saved recommendation.
       </p>
-      {!analysis.sample_data && (
-        <p className="timeline-note">
-          Sampled corridor forecast bins, not native model boundaries. Snowfall uses the provider's
-          fixed 7:1 approximation. Source run time is unavailable.
-        </p>
-      )}
     </section>
   )
 }
