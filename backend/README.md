@@ -2,7 +2,7 @@
 
 Modular monolith with backend-authoritative deterministic risk calculations. Local mode defaults to labeled sample fixtures; explicitly authorized live mode uses the normalized TomTom and Open-Meteo adapters. Hosted live use remains disabled until separate public-source release checks pass.
 
-The prepared public-access update serves three fixed example trips through `GET /api/v1/examples/{scenario}/`. Their shared snapshots have a server-assigned immutable public marker; existing and custom records remain private. Public examples default on locally and off in hosted configuration until release approval. The private access hash is still mandatory on hosted Django for all protected operations. See [the API contract](API_CONTRACT.md) for durable anonymous limits and scope enforcement.
+The public-example service serves three fixed trips through `GET /api/v1/examples/{scenario}/`. Their shared snapshots have a server-assigned immutable public marker; existing and custom records remain private. Public examples default on locally and off in hosted configuration; the published release explicitly enables them. The private access hash is still mandatory on hosted Django for all protected operations. See [the API contract](API_CONTRACT.md) for durable anonymous limits and scope enforcement.
 
 | Module             | Ownership                                                                                         |
 | ------------------ | ------------------------------------------------------------------------------------------------- |

@@ -171,7 +171,7 @@ With both local servers running and Google Chrome installed:
 npm run test:browser
 ```
 
-CI runs the PostgreSQL backend suite, frontend checks/build and demo browser tests without provider credentials. The 10 October 2026 deployment verification recorded **273 PostgreSQL backend tests, 44 frontend tests and seven hosted browser check groups passing**, plus all 147 forecast variable/hour reads. These are dated results, not a claim that every future build passes. [Verification summary](docs/deployment/READINESS.md) · [Browser test guide](frontend/e2e/README.md)
+CI runs the PostgreSQL backend suite, frontend checks/build and example browser tests without provider credentials. The 11 October 2026 release verification recorded **297 PostgreSQL backend tests, 48 frontend tests, 25 local browser check groups and 12 hosted browser check groups passing**, plus all 147 hosted forecast variable/hour reads. Hosted checks cover public examples and protected-operation rejection; full hosted live acceptance remains blocked. [Verification summary](docs/deployment/FINAL_SUBMISSION_STATUS.md) · [Browser test guide](frontend/e2e/README.md)
 
 ## Architecture
 
