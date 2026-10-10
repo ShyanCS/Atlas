@@ -33,6 +33,12 @@ npm run dev
 
 The shell opens directly. Cold-start feedback stays inside the workspace while examples load. Recovery is manual; no automatic provider retry occurs. Protected integrations can still use an explicitly authorized bearer token kept only in tab memory; no token is generated, embedded or requested from public example visitors.
 
+After a protected planner operation is denied, Private planning access offers
+an optional contextual password field. Setting it clears the input and makes
+no network request; the next explicit planning action remains server-authorized.
+Reload clears access. It is not a user account or a provider key, and does not
+enable hosted providers.
+
 ## Check
 
 ```sh

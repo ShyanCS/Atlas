@@ -414,6 +414,7 @@ export default function App() {
             initial={analysis?.mode === 'live' ? analysisToTripInput(analysis) : sampleDraft}
             curatedExample
             startWithLive
+            privateAccessRequired={workspace.error?.code === 'ASSESSMENT_ACCESS_REQUIRED'}
             pending={workspace.analysisPending}
             onSubmit={(input) => {
               void (input.mode === 'sample' ? loadExample(input.scenario) : analyze(input)).then(

@@ -3,6 +3,7 @@ import type { TripInput } from '../contracts/types'
 import { defaultTrip } from '../contracts/defaults'
 import { Icon } from './Icon'
 import { LocationPicker } from './LocationPicker'
+import { PrivatePlanningAccess } from './PrivatePlanningAccess'
 
 function nextDeparture(zone: string) {
   return new Intl.DateTimeFormat('sv-SE', {
@@ -26,6 +27,7 @@ export function TripForm({
   onDirty,
   curatedExample = false,
   startWithLive = false,
+  privateAccessRequired = false,
 }: {
   initial?: TripInput
   pending: boolean
@@ -34,6 +36,7 @@ export function TripForm({
   onDirty?: () => void
   curatedExample?: boolean
   startWithLive?: boolean
+  privateAccessRequired?: boolean
 }) {
   const [departure, setDeparture] = useState(
     startWithLive && initial.mode !== 'live'
@@ -321,6 +324,7 @@ export function TripForm({
           {errorMessage}
         </p>
       )}
+      {mode === 'live' && privateAccessRequired && <PrivatePlanningAccess />}
       {mode === 'live' && (!originReady || !destinationReady) && (
         <p role="status">
           Select a matching location before analyzing. Draft search text is not a committed

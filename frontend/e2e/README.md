@@ -1,5 +1,13 @@
 # Local browser verification
 
+`node e2e/hosted-public.cjs` is a separate, bounded verification of the exact
+published Pages/Render origins. It uses actual HTTPS responses and captures
+1440×900/390×844 screenshots under `docs/deployment/evidence/2026-10-11/`.
+It makes no live-provider requests. Optional private planning verification reads
+`ATLAS_REVIEWER_CODE` from the process environment only; never put it in a command,
+URL, screenshot or committed environment file. Authorized submission must still
+return LIVE_MODE_UNAVAILABLE while public provider permissions are disabled.
+
 For a new audit without overwriting prior evidence, set `ATLAS_BROWSER_EVIDENCE_SUBDIR=gate-1/browser` before running. Output stays inside `docs/implementation/evidence/`. The default remains `browser` for the original Phase 3A workflow. Gate 1 uses the built preview on port 4173.
 
 Start Django on `127.0.0.1:8000` and Vite on `127.0.0.1:5173`. Use the supported Node runtime and run `npm run test:browser` in `frontend/`. The pinned Playwright package is installed by `npm ci --ignore-scripts`; the default uses an existing Google Chrome installation.
