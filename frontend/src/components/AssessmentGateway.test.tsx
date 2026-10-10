@@ -36,7 +36,7 @@ describe('assessment access and cold start', () => {
     fireEvent.change(await screen.findByLabelText('Private reviewer access code'), {
       target: { value: 'authored-reviewer-code-for-testing' },
     })
-    fireEvent.click(screen.getByRole('button', { name: 'Open assessment' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Open Dispatch Canvas' }))
     expect(await screen.findByText('Workspace ready')).toBeInTheDocument()
     expect(scenarios).toHaveBeenCalledTimes(1)
     expect(getAssessmentAccessCode()).toBe('authored-reviewer-code-for-testing')

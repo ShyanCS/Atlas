@@ -46,15 +46,15 @@ export function AssessmentGateway({ children }: { children: ReactNode }) {
     <main className="assessment-gateway">
       <section className="panel" aria-labelledby="assessment-access-title">
         <AtlasBrand />
-        <p className="eyebrow">PERSONAL NONCOMMERCIAL ASSESSMENT</p>
+        <p className="eyebrow">WEATHER INTELLIGENCE</p>
         <h1 id="assessment-access-title">
-          {state === 'locked' ? 'Reviewer access' : 'Connecting to Dispatch Canvas'}
+          {state === 'locked' ? 'Access Spotter Atlas' : 'Connecting to Dispatch Canvas'}
         </h1>
         {state === 'checking' && (
           <p role="status">
             {slow
               ? 'The free backend or database may be waking. This can take about a minute. No trip has been submitted.'
-              : 'Checking backend readiness…'}
+              : 'Connecting to your workspace…'}
           </p>
         )}
         {state === 'locked' && (
@@ -76,11 +76,11 @@ export function AssessmentGateway({ children }: { children: ReactNode }) {
               required
             />
             <p className="quiet">
-              The code stays in this tab's memory. A reload requires entering it again. Live
-              forecasts remain subject to the assessment's source permissions.
+              Your code stays in this tab's memory. Enter it again after a reload. Live forecasts
+              require the configured source permissions.
             </p>
             <button className="btn primary" type="submit">
-              Open assessment
+              Open Dispatch Canvas
             </button>
           </form>
         )}

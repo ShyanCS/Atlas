@@ -90,16 +90,16 @@ export function TripForm({
             }
           }}
         >
-          <option value="sample">Sample · offline fixtures</option>
-          <option value="live">Live · personal noncommercial assessment</option>
+          <option value="sample">Demo Mode · explore scenarios</option>
+          <option value="live">Live Analysis · provider forecasts</option>
         </select>
       </div>
       {mode === 'live' ? (
         <>
           <p className="coverage-warning">
-            Open-Meteo rain + showers and 10 m wind. Snowfall uses the provider's fixed 7:1
-            approximation, approved for this assessment only. Forecast run time is unavailable. Not
-            for operational travel decisions.
+            10 m wind and liquid rain + showers from Open-Meteo. Snowfall uses a fixed 7:1
+            approximation; forecast run time is unavailable. Current Free access is limited to
+            personal noncommercial use. Review sources and conditions before travel.
           </p>
           <LocationPicker
             label="Origin"
@@ -119,18 +119,18 @@ export function TripForm({
       ) : (
         <>
           <p className="sample-disclosure">
-            Sample corridor and hypothetical weather. These results are for evaluation, not travel
-            decisions.
+            Explore the Chicago–Atlanta demo with hypothetical weather and illustrative routes. Demo
+            values are not live travel conditions.
           </p>
           <div className="field">
             <label htmlFor="origin">Origin</label>
             <input id="origin" value="Chicago, Illinois" readOnly />
-            <small>Fixed sample place · no live geocoding</small>
+            <small>Demo origin · Chicago–Atlanta corridor</small>
           </div>
           <div className="field">
             <label htmlFor="destination">Destination</label>
             <input id="destination" value="Atlanta, Georgia" readOnly />
-            <small>Independently illustrated truck-route scenarios</small>
+            <small>Demo destination · three illustrative alternatives</small>
           </div>
         </>
       )}
@@ -260,7 +260,7 @@ export function TripForm({
         <p>
           Cargo is distinct from total vehicle weight.{' '}
           {mode === 'sample'
-            ? 'Sample routes have no validated road restrictions.'
+            ? 'Demo routes are illustrative and have no validated road restrictions.'
             : 'Truck routing validates provider sections and warnings; it does not certify road safety or dock access.'}{' '}
           Stops, rest, and duty breaks are excluded from modeled driving time.
         </p>
@@ -284,7 +284,7 @@ export function TripForm({
       </fieldset>
       {mode === 'sample' && (
         <div className="field">
-          <label htmlFor="scenario">Labeled sample scenario</label>
+          <label htmlFor="scenario">Demo scenario</label>
           <select
             id="scenario"
             value={scenario}
@@ -316,10 +316,10 @@ export function TripForm({
         {pending
           ? mode === 'live'
             ? 'Acquiring routes and weather…'
-            : 'Analyzing sample…'
+            : 'Analyzing demo…'
           : mode === 'live'
             ? 'Analyze live trip'
-            : 'Analyze sample trip'}
+            : 'Analyze demo trip'}
       </button>
     </form>
   )

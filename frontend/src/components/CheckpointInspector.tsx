@@ -65,8 +65,8 @@ export function CheckpointInspector({
           <Icon name={preferred ? 'check' : 'alert'} />
           {preferred
             ? analysis.sample_data
-              ? 'Preferred in sample'
-              : 'Preferred under assessment policy'
+              ? 'Recommended · Demo'
+              : 'Recommended route'
             : 'No verified recommendation'}
         </span>
         <h2>{preferred ? `Route ${preferred.code} preferred.` : 'Recommendation withheld.'}</h2>
@@ -124,7 +124,7 @@ export function CheckpointInspector({
             <div className="weather-values">
               <WeatherValue
                 label="Wind"
-                caption={analysis.sample_data ? '10 m · sample speed' : '10 m · forecast speed'}
+                caption={analysis.sample_data ? '10 m · demo value' : '10 m · forecast speed'}
                 icon="wind"
                 measurement={checkpoint.measurements.wind}
               />
@@ -243,8 +243,8 @@ export function SourceDetails({
     <div className="source-details">
       <p className="sample-disclosure">
         {analysis.sample_data
-          ? 'Synthetic fixture measurements, not a live GFS or NBM forecast. Native-depth semantics here are hypothetical test inputs.'
-          : 'Live Open-Meteo / DWD ICON Global JSON forecasts. Liquid rain combines rain + showers. Snowfall uses a fixed 7:1 provider relationship, approved only for this assessment. Model initialization is not exposed; native hourly model intervals are not verified.'}
+          ? 'Demo Mode · illustrative weather values and routes. These measurements are not live forecasts.'
+          : 'Open-Meteo / DWD ICON Global forecasts. Liquid rain combines rain + showers. Snowfall uses an approximate fixed 7:1 relationship. Current Free access is limited to personal noncommercial use. Model initialization is not exposed; native hourly model intervals are not verified.'}
       </p>
       <h3>Run and policy</h3>
       <p className="mono">{analysis.id}</p>

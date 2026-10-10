@@ -72,13 +72,13 @@ let browser
         status: 'PASS',
       })
       await input.fill('incorrect-authored-code-for-tests')
-      await page.getByRole('button', { name: 'Open assessment' }).click()
+      await page.getByRole('button', { name: 'Open Dispatch Canvas' }).click()
       await page.getByRole('alert').waitFor()
       assert.equal(submissions, 0)
       await input.fill(code)
-      await page.getByRole('button', { name: 'Open assessment' }).click()
-      await page.getByRole('button', { name: 'Analyze default sample', exact: true }).waitFor()
-      await page.getByRole('button', { name: 'Analyze default sample', exact: true }).click()
+      await page.getByRole('button', { name: 'Open Dispatch Canvas' }).click()
+      await page.getByRole('button', { name: 'Explore Demo', exact: true }).waitFor()
+      await page.getByRole('button', { name: 'Explore Demo', exact: true }).click()
       await page.getByTestId('recommendation').waitFor()
       assert.equal(submissions, 1)
       await page.waitForFunction(

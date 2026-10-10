@@ -16,7 +16,7 @@ describe('trip input contract', () => {
       target: { value: '40000.01' },
     })
     fireEvent.click(screen.getByRole('radio', { name: '50 mi' }))
-    fireEvent.click(screen.getByRole('button', { name: 'Analyze sample trip' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Analyze demo trip' }))
     expect(submit).toHaveBeenCalledOnce()
     expect(submit.mock.calls[0]?.[0]).toMatchObject({
       mode: 'sample',
@@ -34,10 +34,10 @@ describe('trip input contract', () => {
     render(<TripForm pending={false} onSubmit={submit} />)
     expect(screen.getByLabelText('Origin')).toHaveAttribute('readonly')
     expect(screen.getByText(/Hypothetical weather|hypothetical weather/)).toBeVisible()
-    fireEvent.change(screen.getByLabelText('Labeled sample scenario'), {
+    fireEvent.change(screen.getByLabelText('Demo scenario'), {
       target: { value: 'partial' },
     })
-    fireEvent.click(screen.getByRole('button', { name: 'Analyze sample trip' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Analyze demo trip' }))
     expect(submit.mock.calls[0]?.[0]).toMatchObject({
       scenario: 'partial',
       origin: { name: 'Chicago, IL' },

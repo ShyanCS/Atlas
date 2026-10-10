@@ -42,6 +42,7 @@ export function toApiError(error: unknown): ApiError {
   // Deliberately omit transport error messages/URLs and response bodies.
   return new ApiError({
     code: 'NETWORK_UNAVAILABLE',
-    message: 'The local API is unavailable. Your inputs have been retained.',
+    message:
+      'The backend is unavailable. Your inputs are retained; retry the connection when ready.',
   })
 }

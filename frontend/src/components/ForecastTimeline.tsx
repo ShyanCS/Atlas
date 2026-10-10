@@ -107,10 +107,10 @@ export function ForecastTimeline({
         </div>
         <span className="frame-status" role="status">
           {pending
-            ? `Preparing requested ${analysis.sample_data ? 'sample' : 'forecast'} frame…`
+            ? `Preparing requested ${analysis.sample_data ? 'demo' : 'forecast'} frame…`
             : frame
-              ? `${frame.coverage.known_cells}/${frame.coverage.total_cells} ${analysis.sample_data ? 'sample cells' : 'forecast samples'} · ${frame.acquisition_status}`
-              : 'Frame not acquired'}
+              ? `${frame.coverage.known_cells}/${frame.coverage.total_cells} ${analysis.sample_data ? 'demo cells' : 'forecast locations'} · ${frame.acquisition_status}`
+              : 'Choose a forecast hour'}
         </span>
       </div>
       {frame && (

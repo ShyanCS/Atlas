@@ -76,12 +76,12 @@ async function analyzeDefault(page) {
     (response) =>
       response.url().endsWith('/api/v1/analyses/') && response.request().method() === 'POST',
   )
-  await page.getByRole('button', { name: 'Analyze default sample', exact: true }).click()
+  await page.getByRole('button', { name: 'Explore Demo', exact: true }).click()
   const api = await response
   assert.equal(api.status(), 201)
   const analysis = await api.json()
   await page.getByTestId('recommendation').waitFor()
-  await page.getByText(/sample cells ·/).waitFor()
+  await page.getByText(/demo cells ·/).waitFor()
   results.timings.push({
     operation: 'POST sample + render first frame',
     milliseconds: Math.round(performance.now() - start),
@@ -97,13 +97,13 @@ async function screenshot(page, name) {
   await page.screenshot({ path: path.join(output, name) })
 }
 async function submitScenario(page, scenario) {
-  await page.getByRole('button', { name: 'Edit sample trip', exact: true }).click()
-  await page.getByLabel('Labeled sample scenario', { exact: true }).selectOption(scenario)
+  await page.getByRole('button', { name: 'Edit trip', exact: true }).click()
+  await page.getByLabel('Demo scenario', { exact: true }).selectOption(scenario)
   const response = page.waitForResponse(
     (response) =>
       response.url().endsWith('/api/v1/analyses/') && response.request().method() === 'POST',
   )
-  await page.getByRole('button', { name: 'Analyze sample trip', exact: true }).click()
+  await page.getByRole('button', { name: 'Analyze demo trip', exact: true }).click()
   const api = await response
   assert.equal(api.status(), 201)
   const result = await api.json()
@@ -126,7 +126,7 @@ async function submitScenario(page, scenario) {
     await check('Initial state clearly labeled sample, no fabricated analysis', async () => {
       await open(page)
       assert.equal(await page.getByTestId('recommendation').count(), 0)
-      assert.ok(await page.getByText('SAMPLE DATA', { exact: true }).isVisible())
+      assert.ok(await page.getByText('DEMO MODE', { exact: true }).isVisible())
       await screenshot(page, 'dispatch-empty.desktop.png')
     })
     let analysis
@@ -196,7 +196,7 @@ async function submitScenario(page, scenario) {
       },
     )
     await check('Native dialog keyboard focus and Escape return', async () => {
-      const trigger = page.getByRole('button', { name: 'Edit sample trip', exact: true })
+      const trigger = page.getByRole('button', { name: 'Edit trip', exact: true })
       await trigger.focus()
       await trigger.press('Enter')
       assert.ok(await page.getByRole('dialog').isVisible())
@@ -261,13 +261,13 @@ async function submitScenario(page, scenario) {
     await check(
       'Ambiguous/nonexistent local time requires backend resolution; input retained',
       async () => {
-        await page.getByRole('button', { name: 'Edit sample trip', exact: true }).click()
+        await page.getByRole('button', { name: 'Edit trip', exact: true }).click()
         await page.getByLabel('Local departure', { exact: true }).fill('2026-11-01T01:30')
         let response = page.waitForResponse(
           (response) =>
             response.url().endsWith('/api/v1/analyses/') && response.request().method() === 'POST',
         )
-        await page.getByRole('button', { name: 'Analyze sample trip', exact: true }).click()
+        await page.getByRole('button', { name: 'Analyze demo trip', exact: true }).click()
         let api = await response
         assert.equal(api.status(), 400)
         assert.equal((await api.json()).error.code, 'DEPARTURE_TIME_AMBIGUOUS')
@@ -281,7 +281,7 @@ async function submitScenario(page, scenario) {
           (response) =>
             response.url().endsWith('/api/v1/analyses/') && response.request().method() === 'POST',
         )
-        await page.getByRole('button', { name: 'Analyze sample trip', exact: true }).click()
+        await page.getByRole('button', { name: 'Analyze demo trip', exact: true }).click()
         api = await response
         assert.equal(api.status(), 400)
         assert.equal((await api.json()).error.code, 'DEPARTURE_TIME_NONEXISTENT')
@@ -312,11 +312,11 @@ async function submitScenario(page, scenario) {
           })
         }
         await page.route('**/api/v1/analyses/', delayedFailure)
-        await page.getByRole('button', { name: 'Edit sample trip', exact: true }).click()
-        await page.getByRole('button', { name: 'Analyze sample trip', exact: true }).click()
+        await page.getByRole('button', { name: 'Edit trip', exact: true }).click()
+        await page.getByRole('button', { name: 'Analyze demo trip', exact: true }).click()
         try {
           assert.ok(
-            await page.getByRole('button', { name: 'Analyzing sample…', exact: true }).isDisabled(),
+            await page.getByRole('button', { name: 'Analyzing demo…', exact: true }).isDisabled(),
           )
         } finally {
           releaseFailure()
@@ -422,7 +422,7 @@ async function submitScenario(page, scenario) {
         await mobile.page.getByRole('button', { name: 'Summary', exact: true }).click()
         assert.ok(
           await mobile.page
-            .getByRole('heading', { name: 'Route B preferred in this sample', exact: true })
+            .getByRole('heading', { name: 'Route B · recommended', exact: true })
             .isVisible(),
         )
         await screenshot(mobile.page, 'driver-summary.mobile.png')

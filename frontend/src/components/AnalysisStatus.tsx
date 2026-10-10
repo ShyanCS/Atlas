@@ -33,7 +33,7 @@ export function AnalysisStatus({
   const message = pending
     ? slow
       ? 'Still processing. A free backend or database may need time to wake. No automatic provider retry is made; a recommendation appears only after completion.'
-      : 'Preparing checkpoints and evaluating the disclosed policy. A recommendation appears only after analysis completes.'
+      : 'Matching checkpoint weather and comparing route exposure. Your recommendation appears when analysis completes.'
     : (error ??
       (stale
         ? 'The saved snapshot still belongs to its original inputs. Re-analyze to evaluate your changes.'

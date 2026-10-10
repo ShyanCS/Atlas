@@ -22,7 +22,7 @@ const dialogTitles = {
   compare: 'Compare evaluated routes',
   checkpoints: 'Checkpoint weather at arrival',
   sources: 'Sources, intervals and exposure',
-  summary: 'Sample driver summary',
+  summary: 'Driver briefing',
 }
 
 export default function App() {
@@ -108,8 +108,8 @@ export default function App() {
           </nav>
         </div>
         <div className="top-right">
-          <span className="sample">{live ? 'LIVE FORECAST · ASSESSMENT' : 'SAMPLE DATA'}</span>
-          <span className="mono quiet desktop-only">ASSESSMENT EVALUATION</span>
+          <span className="sample">{live ? 'LIVE ANALYSIS' : 'DEMO MODE'}</span>
+          <span className="mono quiet desktop-only">WEATHER INTELLIGENCE</span>
         </div>
       </header>
       <main id="main" className="workspace" tabIndex={-1}>
@@ -117,7 +117,7 @@ export default function App() {
           <div>
             <p className="crumb mono">
               DISPATCH /{' '}
-              {analysis ? `RUN ${analysis.id.slice(0, 8).toUpperCase()}` : 'SAMPLE WORKSPACE'}
+              {analysis ? `RUN ${analysis.id.slice(0, 8).toUpperCase()}` : 'DISPATCH CANVAS'}
             </p>
             <h1>
               {analysis
@@ -129,13 +129,13 @@ export default function App() {
             <div className="snapshot desktop-only">
               <strong>
                 {analysis
-                  ? `${live ? 'Live' : 'Sample'} analysis · ${datedClock(analysis.completed_at ?? analysis.created_at)}`
-                  : 'Create a sample analysis'}
+                  ? `${live ? 'Live analysis' : 'Demo analysis'} · ${datedClock(analysis.completed_at ?? analysis.created_at)}`
+                  : 'Plan a trip or explore the demo'}
               </strong>
               <span>
                 {analysis
                   ? `${analysis.policy_version} · ${state.isStale ? 'previous inputs' : 'immutable result'}`
-                  : 'No live routing or forecast data'}
+                  : 'Route planning · weather intelligence'}
               </span>
             </div>
             <button
@@ -160,8 +160,8 @@ export default function App() {
         </div>
         <p className="global-disclosure">
           {live
-            ? 'Personal noncommercial assessment. Live truck routes and forecast weather; snowfall uses a disclosed fixed 7:1 provider approximation. Not for operational travel decisions.'
-            : 'Hypothetical weather and independently illustrated routes. Not for travel decisions.'}
+            ? 'Live Analysis · provider forecasts with approximate snowfall. Review sources and conditions before travel.'
+            : 'Demo Mode · illustrative routes and weather, ready to explore. These are not live travel conditions.'}
         </p>
         <AnalysisStatus
           pending={workspace.analysisPending}
@@ -177,7 +177,7 @@ export default function App() {
                 <h2>Your trip</h2>
                 <button
                   className="text-button desktop-only"
-                  aria-label="Edit sample trip"
+                  aria-label="Edit trip"
                   onClick={openTrip}
                 >
                   <Icon name="edit" />
@@ -212,7 +212,7 @@ export default function App() {
               <div className="trip-actions">
                 <button className="btn primary" onClick={openTrip}>
                   <Icon name="refresh" />
-                  {analysis ? 'Edit & analyze' : 'Plan sample trip'}
+                  {analysis ? 'Edit & analyze' : 'Plan a trip'}
                 </button>
                 <button className="btn" onClick={() => setDialog('sources')} disabled={!analysis}>
                   <Icon name="info" />
@@ -223,10 +223,10 @@ export default function App() {
             <div className="rail-heading desktop-only">
               <span className="eyebrow">Route comparison</span>
               <span>
-                {analysis?.routes.length ?? 0} {live ? 'truck candidates' : 'sample options'}
+                {analysis?.routes.length ?? 0} {live ? 'truck candidates' : 'demo routes'}
               </span>
             </div>
-            <section className="route-list" aria-label="Evaluated sample route candidates">
+            <section className="route-list" aria-label="Evaluated route candidates">
               {analysis?.routes
                 .slice()
                 .sort((a, b) => (a.rank ?? 100) - (b.rank ?? 100))
@@ -244,7 +244,9 @@ export default function App() {
               <section className="panel empty-card">
                 <Icon name="compass" />
                 <h2>Plan. Understand. Dispatch.</h2>
-                <p>Compare three illustrated candidates under the disclosed weather-risk policy.</p>
+                <p>
+                  Explore three demo routes and see how weather exposure shapes the recommendation.
+                </p>
                 <button
                   className="btn primary wide"
                   onClick={() => {
@@ -252,7 +254,7 @@ export default function App() {
                   }}
                   disabled={workspace.analysisPending}
                 >
-                  {workspace.analysisPending ? 'Analyzing sample…' : 'Analyze default sample'}
+                  {workspace.analysisPending ? 'Analyzing demo…' : 'Explore Demo'}
                 </button>
               </section>
             )}
@@ -261,12 +263,12 @@ export default function App() {
               Driving-time estimates exclude stops and duty breaks.{' '}
               {live
                 ? 'Provider truck compatibility is not a road-safety guarantee.'
-                : 'Sample routes do not establish road legality.'}
+                : 'Demo routes are illustrative; verify road restrictions before travel.'}
             </p>
             <section className="ranking-rule panel">
-              <strong>Assessment ranking, in order</strong>
+              <strong>Recommendation priority</strong>
               <p>Severe mi → High mi → mean → time</p>
-              <span>Eligibility first · no weighted AI score</span>
+              <span>Eligibility first · deterministic ranking</span>
             </section>
           </div>
           <div className="map-column">
@@ -301,8 +303,8 @@ export default function App() {
                   Forecast viewer <span>/ 0–48 hours</span>
                 </h2>
                 <p>
-                  Create an analysis to acquire explicitly labeled sample weather cells. Forecast
-                  scrubbing will keep arrival-risk results unchanged.
+                  Explore weather along your trip at 49 hourly positions. The timeline keeps your
+                  arrival-time recommendation unchanged.
                 </p>
               </section>
             )}
@@ -348,7 +350,7 @@ export default function App() {
               </a>
             </>
           ) : (
-            'SAMPLE ANALYSIS'
+            'DEMO MODE'
           )}{' '}
           · NATURAL EARTH GEOGRAPHY · VERSIONED POLICY RESULTS
         </span>
@@ -446,10 +448,10 @@ export default function App() {
         )}
         {dialog === 'summary' && analysis && (
           <div className="driver-summary">
-            <span className="sample">{live ? 'LIVE FORECAST · ASSESSMENT' : 'SAMPLE DATA'}</span>
+            <span className="sample">{live ? 'LIVE ANALYSIS' : 'DEMO MODE'}</span>
             <h2>
               {preferred
-                ? `Route ${preferred.code} preferred in this ${live ? 'analysis' : 'sample'}`
+                ? `Route ${preferred.code} · recommended`
                 : 'No verified travel recommendation'}
             </h2>
             <p>{analysis.recommendation.reason}</p>
@@ -474,8 +476,8 @@ export default function App() {
             )}
             <p className="sample-disclosure">
               {live
-                ? 'Read-only assessment briefing. Forecast uncertainty and the provider snowfall approximation apply; no travel or navigation assurance.'
-                : 'Read-only sample briefing. Review while parked. Hypothetical weather and illustrated routes provide no travel or navigation assurance.'}
+                ? 'Review while parked. Forecast uncertainty and approximate snowfall require judgment; this briefing is not a navigation or safety guarantee.'
+                : 'Demo briefing · illustrative conditions and routes. Review while parked; do not use demo values for travel decisions.'}
             </p>
           </div>
         )}
