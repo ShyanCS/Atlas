@@ -18,6 +18,10 @@ const result = {
   renderer: 'Hosted Chrome with SwiftShader; no physical GPU certification',
 }
 let browser
+const sanitize = (message) =>
+  process.env.ATLAS_REVIEWER_CODE
+    ? message.replaceAll(process.env.ATLAS_REVIEWER_CODE, '[REDACTED]')
+    : message
 async function check(name, fn) {
   const start = performance.now()
   await fn()
@@ -39,7 +43,7 @@ async function check(name, fn) {
       page.setDefaultTimeout(60000)
       let creations = 0
       let calls = 0
-      page.on('pageerror', (error) => result.errors.push(error.message))
+      page.on('pageerror', (error) => result.errors.push(sanitize(error.message)))
       page.on('request', (r) => {
         if (r.url().startsWith(api)) {
           calls++
@@ -179,7 +183,7 @@ async function check(name, fn) {
     result.status = 'PASS'
   } catch (error) {
     result.status = 'FAIL'
-    result.failure = error.message
+    result.failure = sanitize(error.message)
     process.exitCode = 1
   } finally {
     if (browser) await browser.close()

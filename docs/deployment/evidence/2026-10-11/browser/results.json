@@ -1,0 +1,71 @@
+{
+  "status": "PASS",
+  "checks": [
+    {
+      "name": "Hosted anonymous entry, HTTPS/CSP and MapLibre 1440",
+      "status": "PASS",
+      "milliseconds": 6617
+    },
+    {
+      "name": "Hosted checkpoint selection and immutable preference 1440",
+      "status": "PASS",
+      "milliseconds": 1733
+    },
+    {
+      "name": "Hosted keyboard forecast 0/48 and Unknown legend 1440",
+      "status": "PASS",
+      "milliseconds": 3058
+    },
+    {
+      "name": "Hosted protected planner retains draft 1440",
+      "status": "PASS",
+      "milliseconds": 5223
+    },
+    {
+      "name": "Explicit private planning authorization, live still disabled 1440",
+      "status": "PASS",
+      "milliseconds": 8337
+    },
+    {
+      "name": "Hosted reload without credentials or new snapshot 1440",
+      "status": "PASS",
+      "milliseconds": 3283
+    },
+    {
+      "name": "Hosted anonymous entry, HTTPS/CSP and MapLibre 390",
+      "status": "PASS",
+      "milliseconds": 3470
+    },
+    {
+      "name": "Hosted checkpoint selection and immutable preference 390",
+      "status": "PASS",
+      "milliseconds": 2508
+    },
+    {
+      "name": "Hosted keyboard forecast 0/48 and Unknown legend 390",
+      "status": "PASS",
+      "milliseconds": 2543
+    },
+    {
+      "name": "Hosted protected planner retains draft 390",
+      "status": "PASS",
+      "milliseconds": 3181
+    },
+    {
+      "name": "Explicit private planning authorization, live still disabled 390",
+      "status": "PASS",
+      "milliseconds": 4024
+    },
+    {
+      "name": "Hosted reload without credentials or new snapshot 390",
+      "status": "PASS",
+      "milliseconds": 2095
+    }
+  ],
+  "errors": [],
+  "unexpected_requests": [],
+  "provider_calls": 0,
+  "started_at": "2026-10-10T20:03:18.105Z",
+  "renderer": "Hosted Chrome with SwiftShader; no physical GPU certification",
+  "completed_at": "2026-10-10T20:04:07.542Z"
+}

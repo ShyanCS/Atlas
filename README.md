@@ -8,7 +8,7 @@ Spotter Atlas brings truck-aware route planning, hourly weather forecasts and ro
 
 [Features](#key-features) · [Getting started](#getting-started) · [Architecture](#architecture) · [Data sources](#data-sources-and-limitations) · [Roadmap](#roadmap)
 
-**[Open Spotter Atlas](https://spotter-atlas-assessment.pages.dev/)** · [Deployment verification](docs/deployment/AUTOMATED_DEPLOYMENT_STATUS.md) · [Public-access update](docs/implementation/PRODUCT_EXPERIENCE_CLEANUP.md)
+**[Open Spotter Atlas](https://spotter-atlas-assessment.pages.dev/)** · [Current release verification](docs/deployment/FINAL_SUBMISSION_STATUS.md) · [Walkthrough guide](docs/deployment/SUBMISSION_WALKTHROUGH.md)
 
 ## Product preview
 
@@ -16,7 +16,7 @@ Spotter Atlas brings truck-aware route planning, hourly weather forecasts and ro
 
 ![Spotter Atlas desktop Dispatch Canvas](docs/implementation/evidence/product-access-cleanup/after/dispatch-1440.png)
 
-_Route alternatives, arrival-time risk segments, checkpoint inspection and the forecast timeline, shown with the built-in example trip. Preview of the local update awaiting publication._
+_Route alternatives, arrival-time risk segments, checkpoint inspection and the forecast timeline, shown with the built-in example trip. The hosted workspace opens directly without an access screen._
 
 ### Mobile experience
 
@@ -192,7 +192,7 @@ Spotter Atlas is a modular monolith. Provider adapters normalize routing and wea
 - Open-Meteo access is subject to its [provider terms](https://open-meteo.com/en/terms), including noncommercial restrictions on the current Free access. The current integration scope is a personal noncommercial assessment demonstration.
 - Provider-reported snowfall is model-derived and approximate, using a fixed 7:1 snow/water relationship. Forecast initialization is not exposed; service-hourly values are not claimed as verified native model intervals.
 - Built-in example routes and weather values are illustrative. Their contextual **Example trip** indicator and source panel distinguish them from provider-backed results. Null weather remains Unknown.
-- The direct-entry public-example update is prepared locally and awaits approval to push and deploy. The current hosted revision still has its earlier private access gate. Hosted live-provider operations remain disabled; the previously verified local live workflow does not establish hosted live availability.
+- The direct-entry public example release is deployed and verified. Hosted live-provider operations remain disabled pending the separate public-use release confirmations; the previously verified local live workflow does not establish hosted live availability or full assessment completion.
 - Route/weather guidance does not guarantee road safety, truck-road legality or dock access. Driving ETAs exclude stops and duty breaks.
 - Corridor overlays show sampled forecast locations, not native model-cell boundaries. Coverage and available alternatives can vary by route and forecast window.
 - Hosted deployment and public live-provider use have separate activation requirements. See [security](SECURITY.md) and the [release checklist](docs/deployment/SETUP.md).

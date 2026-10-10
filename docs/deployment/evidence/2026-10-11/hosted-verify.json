@@ -1,0 +1,49 @@
+{
+  "status": "PASS",
+  "provider_calls": 0,
+  "started_at": "2026-10-10T19:47:39Z",
+  "health": {
+    "assessment_access_required": true,
+    "public_examples_available": true,
+    "status": "ok",
+    "mode": "sample",
+    "live_available": false,
+    "policy_version": "atlas-assessment-policy-v1.0.0",
+    "version": "0.1.0"
+  },
+  "anonymous_protected_operations": "PASS",
+  "cors": "PASS",
+  "scenarios": {
+    "complete": "recommended",
+    "partial": "unverified",
+    "no-travel": "blocked"
+  },
+  "frame_reads": 147,
+  "frame_seconds": 61.922,
+  "private_snapshot_authorization": "PASS",
+  "authorized_live_disabled": "PASS",
+  "tls": true,
+  "certificate_verification": "verify-full",
+  "channel_binding": "require",
+  "migrations": [
+    "0001_initial",
+    "0002_assessmentrequestwindow_providerrequestbudget",
+    "0003_immutable_published_results",
+    "0004_curated_example_access"
+  ],
+  "provider_counts": {
+    "routing": 0,
+    "weather": 0,
+    "geocoding": 0
+  },
+  "isolated_cap_count": {
+    "routing": 1,
+    "weather": 0,
+    "geocoding": 0
+  },
+  "server_version": 160015,
+  "http_requests": 161,
+  "mean_request_seconds": 0.473,
+  "max_request_seconds": 3.186,
+  "completed_at": "2026-10-10T19:49:00Z"
+}

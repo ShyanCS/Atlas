@@ -1,5 +1,14 @@
 # Public source readiness
 
+## Direct-entry release — 11 October 2026
+
+The workspace now opens without a login screen. Public access is limited to three
+curated example scenarios, with private planning and records still protected.
+The current [release report](FINAL_SUBMISSION_STATUS.md) and
+[hosted evidence](evidence/2026-10-11/README.md) supersede the older entry-gate
+instructions below. Hosted live-provider activation remains separately blocked.
+Earlier dated measurements are retained as historical records.
+
 ## Hosted Demo Mode update — 10 October 2026
 
 The [reviewer-protected assessment demo](https://spotter-atlas-assessment.pages.dev) is published on Cloudflare Pages Free, Render Free and Neon Free with user approval. Hosted live-provider access remains disabled. Fresh deployment verification recorded 273 PostgreSQL backend tests, 44 frontend tests, all three required CI jobs, seven hosted browser check groups and 147 forecast frame reads passing. Restart persistence and durable provider caps passed with zero provider calls. See the [deployment report](AUTOMATED_DEPLOYMENT_STATUS.md) and [evidence gallery](evidence/2026-10-10/README.md) for measurements, screenshots and unresolved limits.

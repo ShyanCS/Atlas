@@ -1,0 +1,248 @@
+{
+  "resourceId": "srv-db57f1brjlhs73cmkadg",
+  "timeRange": {
+    "start": "2026-10-10T19:46:56Z"
+  },
+  "metrics": [
+    {
+      "type": "memory_usage",
+      "data": [
+        {
+          "labels": [
+            {
+              "field": "instance",
+              "value": "srv-db57f1brjlhs73cmkadg-6fhxf"
+            },
+            {
+              "field": "service",
+              "value": "srv-db57f1brjlhs73cmkadg"
+            },
+            {
+              "field": "resource",
+              "value": "srv-db57f1brjlhs73cmkadg"
+            }
+          ],
+          "unit": "bytes",
+          "values": [
+            {
+              "timestamp": "2026-10-10T19:46:56Z",
+              "value": 89321470
+            }
+          ]
+        },
+        {
+          "labels": [
+            {
+              "field": "instance",
+              "value": "srv-db57f1brjlhs73cmkadg-h6bqw"
+            },
+            {
+              "field": "service",
+              "value": "srv-db57f1brjlhs73cmkadg"
+            },
+            {
+              "field": "resource",
+              "value": "srv-db57f1brjlhs73cmkadg"
+            }
+          ],
+          "unit": "bytes",
+          "values": [
+            {
+              "timestamp": "2026-10-10T19:46:56Z",
+              "value": 2621440
+            },
+            {
+              "timestamp": "2026-10-10T19:47:56Z",
+              "value": 85442560
+            },
+            {
+              "timestamp": "2026-10-10T19:48:56Z",
+              "value": 110649340
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "memory_limit",
+      "data": [
+        {
+          "labels": [
+            {
+              "field": "service",
+              "value": "srv-db57f1brjlhs73cmkadg"
+            },
+            {
+              "field": "resource",
+              "value": "srv-db57f1brjlhs73cmkadg"
+            },
+            {
+              "field": "instance",
+              "value": "srv-db57f1brjlhs73cmkadg-h6bqw"
+            }
+          ],
+          "unit": "bytes",
+          "values": [
+            {
+              "timestamp": "2026-10-10T19:46:56Z",
+              "value": 536870900
+            },
+            {
+              "timestamp": "2026-10-10T19:47:56Z",
+              "value": 536870900
+            },
+            {
+              "timestamp": "2026-10-10T19:48:56Z",
+              "value": 536870900
+            }
+          ]
+        },
+        {
+          "labels": [
+            {
+              "field": "instance",
+              "value": "srv-db57f1brjlhs73cmkadg-6fhxf"
+            },
+            {
+              "field": "service",
+              "value": "srv-db57f1brjlhs73cmkadg"
+            },
+            {
+              "field": "resource",
+              "value": "srv-db57f1brjlhs73cmkadg"
+            }
+          ],
+          "unit": "bytes",
+          "values": [
+            {
+              "timestamp": "2026-10-10T19:46:56Z",
+              "value": 536870900
+            },
+            {
+              "timestamp": "2026-10-10T19:47:56Z",
+              "value": 536870900
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "cpu_usage",
+      "data": [
+        {
+          "labels": [
+            {
+              "field": "service",
+              "value": "srv-db57f1brjlhs73cmkadg"
+            },
+            {
+              "field": "resource",
+              "value": "srv-db57f1brjlhs73cmkadg"
+            },
+            {
+              "field": "instance",
+              "value": "srv-db57f1brjlhs73cmkadg-h6bqw"
+            }
+          ],
+          "unit": "cpu",
+          "values": [
+            {
+              "timestamp": "2026-10-10T19:48:56Z",
+              "value": 0.06690302
+            }
+          ]
+        },
+        {
+          "labels": [
+            {
+              "field": "instance",
+              "value": "srv-db57f1brjlhs73cmkadg-6fhxf"
+            },
+            {
+              "field": "service",
+              "value": "srv-db57f1brjlhs73cmkadg"
+            },
+            {
+              "field": "resource",
+              "value": "srv-db57f1brjlhs73cmkadg"
+            }
+          ],
+          "unit": "cpu",
+          "values": [
+            {
+              "timestamp": "2026-10-10T19:46:56Z",
+              "value": 0.00039093333
+            },
+            {
+              "timestamp": "2026-10-10T19:47:56Z",
+              "value": 0.00034741667
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "cpu_limit",
+      "data": [
+        {
+          "labels": [
+            {
+              "field": "instance",
+              "value": "srv-db57f1brjlhs73cmkadg-h6bqw"
+            },
+            {
+              "field": "service",
+              "value": "srv-db57f1brjlhs73cmkadg"
+            },
+            {
+              "field": "resource",
+              "value": "srv-db57f1brjlhs73cmkadg"
+            }
+          ],
+          "unit": "cpu",
+          "values": [
+            {
+              "timestamp": "2026-10-10T19:46:56Z",
+              "value": 0.15
+            },
+            {
+              "timestamp": "2026-10-10T19:47:56Z",
+              "value": 0.15
+            },
+            {
+              "timestamp": "2026-10-10T19:48:56Z",
+              "value": 0.15
+            }
+          ]
+        },
+        {
+          "labels": [
+            {
+              "field": "instance",
+              "value": "srv-db57f1brjlhs73cmkadg-6fhxf"
+            },
+            {
+              "field": "service",
+              "value": "srv-db57f1brjlhs73cmkadg"
+            },
+            {
+              "field": "resource",
+              "value": "srv-db57f1brjlhs73cmkadg"
+            }
+          ],
+          "unit": "cpu",
+          "values": [
+            {
+              "timestamp": "2026-10-10T19:46:56Z",
+              "value": 0.15
+            },
+            {
+              "timestamp": "2026-10-10T19:47:56Z",
+              "value": 0.15
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
