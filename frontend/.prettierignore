@@ -1,0 +1,8 @@
+node_modules/
+dist/
+coverage/
+src/contracts/generated.ts
+src/test/fixtures/
+public/assets/
+package-lock.json
+e2e/results/

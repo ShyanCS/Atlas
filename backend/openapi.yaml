@@ -1,0 +1,1319 @@
+openapi: 3.0.3
+info:
+  title: Spotter Atlas assessment API
+  version: 1.0.0
+  description: Explicit sample/live sources and authoritative deterministic risk.
+    Hosted live use requires separate permission switches.
+paths:
+  /api/v1/analyses/:
+    post:
+      operationId: createAnalysis
+      tags:
+      - analyses
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AnalysisInputRequest'
+        required: true
+      security:
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Analysis'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: ''
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: ''
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: ''
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: ''
+        '410':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: ''
+        '413':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: ''
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: ''
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: ''
+  /api/v1/analyses/{analysis_id}/:
+    get:
+      operationId: getAnalysis
+      parameters:
+      - in: path
+        name: analysis_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - analyses
+      security:
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Analysis'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: ''
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: ''
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: ''
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: ''
+        '410':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: ''
+        '413':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: ''
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: ''
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: ''
+  /api/v1/analyses/{analysis_id}/frames/:
+    get:
+      operationId: getFrame
+      parameters:
+      - in: path
+        name: analysis_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      - in: query
+        name: hour
+        schema:
+          type: integer
+        description: Integer offset 0 through 48 from the stored departure.
+        required: true
+      - in: query
+        name: variable
+        schema:
+          type: string
+          enum:
+          - rain
+          - snow
+          - wind
+        required: true
+      tags:
+      - analyses
+      security:
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Frame'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: ''
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: ''
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: ''
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: ''
+        '410':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: ''
+        '413':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: ''
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: ''
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: ''
+  /api/v1/health/:
+    get:
+      operationId: health
+      tags:
+      - health
+      security:
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Health'
+          description: ''
+  /api/v1/locations/geocode/:
+    post:
+      operationId: geocodeLocations
+      tags:
+      - locations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GeocodeInputRequest'
+        required: true
+      security:
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GeocodeCandidate'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: ''
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: ''
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: ''
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: ''
+        '410':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: ''
+        '413':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: ''
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: ''
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: ''
+  /api/v1/scenarios/:
+    get:
+      operationId: scenarios
+      tags:
+      - scenarios
+      security:
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Scenarios'
+          description: ''
+components:
+  schemas:
+    AcquisitionStatusEnum:
+      enum:
+      - ready
+      - partial
+      - missing
+      type: string
+      description: |-
+        * `ready` - ready
+        * `partial` - partial
+        * `missing` - missing
+    Analysis:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        status:
+          $ref: '#/components/schemas/AnalysisStatusEnum'
+        mode:
+          $ref: '#/components/schemas/AnalysisMode'
+        sample_data:
+          type: boolean
+        scenario:
+          $ref: '#/components/schemas/ScenarioId'
+        policy_version:
+          type: string
+        fixture_version:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        started_at:
+          type: string
+          format: date-time
+        completed_at:
+          type: string
+          format: date-time
+        expires_at:
+          type: string
+          format: date-time
+        lifecycle:
+          type: array
+          items:
+            $ref: '#/components/schemas/LifecycleEntry'
+        inputs:
+          $ref: '#/components/schemas/AnalysisInputs'
+        routes:
+          type: array
+          items:
+            $ref: '#/components/schemas/Route'
+        recommendation:
+          $ref: '#/components/schemas/Recommendation'
+        warnings:
+          type: array
+          items:
+            type: string
+      required:
+      - completed_at
+      - created_at
+      - expires_at
+      - fixture_version
+      - id
+      - inputs
+      - lifecycle
+      - mode
+      - policy_version
+      - recommendation
+      - routes
+      - sample_data
+      - scenario
+      - started_at
+      - status
+      - warnings
+    AnalysisInputRequest:
+      type: object
+      properties:
+        mode:
+          allOf:
+          - $ref: '#/components/schemas/RequestMode'
+          default: sample
+          description: |-
+            Live requires explicit server noncommercial assessment configuration; no sample fallback.
+
+            * `sample` - sample
+            * `live` - live
+            * `actual` - actual
+        scenario:
+          allOf:
+          - $ref: '#/components/schemas/ScenarioId'
+          default: complete
+        origin:
+          $ref: '#/components/schemas/LocationRequest'
+        destination:
+          $ref: '#/components/schemas/LocationRequest'
+        departure_at:
+          type: string
+          minLength: 1
+          description: ISO8601 absolute instant with explicit offset; optional when
+            departure_local is supplied. Sample UTC arithmetic from departure minus
+            6 hours through plus 50 hours and IANA conversion must fit datetime years
+            1 through 9999. This is not a live forecast horizon.
+          maxLength: 40
+        departure_local:
+          type: string
+          minLength: 1
+          description: Naive local ISO datetime resolved by the backend in origin_timezone.
+          maxLength: 32
+        departure_fold:
+          nullable: true
+          oneOf:
+          - $ref: '#/components/schemas/DepartureFoldEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        origin_timezone:
+          type: string
+          minLength: 1
+          maxLength: 64
+        load_weight_lb:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+        checkpoint_interval_miles:
+          $ref: '#/components/schemas/CheckpointIntervalMilesEnum'
+        truck_profile:
+          $ref: '#/components/schemas/TruckProfileRequest'
+      required:
+      - checkpoint_interval_miles
+      - destination
+      - load_weight_lb
+      - origin
+      - origin_timezone
+    AnalysisInputs:
+      type: object
+      properties:
+        origin:
+          $ref: '#/components/schemas/Location'
+        destination:
+          $ref: '#/components/schemas/Location'
+        departure_at:
+          type: string
+          format: date-time
+        departure_local:
+          type: string
+          nullable: true
+        departure_fold:
+          type: integer
+          nullable: true
+        origin_timezone:
+          type: string
+        load_weight_lb:
+          type: string
+        checkpoint_interval_miles:
+          type: integer
+        truck_profile:
+          $ref: '#/components/schemas/TruckProfile'
+      required:
+      - checkpoint_interval_miles
+      - departure_at
+      - departure_fold
+      - departure_local
+      - destination
+      - load_weight_lb
+      - origin
+      - origin_timezone
+    AnalysisMode:
+      enum:
+      - sample
+      - live
+      type: string
+      description: |-
+        * `sample` - sample
+        * `live` - live
+    AnalysisStatusEnum:
+      enum:
+      - complete
+      type: string
+      description: '* `complete` - complete'
+    Checkpoint:
+      type: object
+      properties:
+        id:
+          type: string
+        route_id:
+          type: string
+        index:
+          type: integer
+        label:
+          type: string
+        distance_mi:
+          type: string
+        eta_utc:
+          type: string
+          format: date-time
+        coordinate:
+          $ref: '#/components/schemas/Coordinate'
+        overall_risk:
+          $ref: '#/components/schemas/RiskLevel'
+        complete:
+          type: boolean
+        governing_conditions:
+          type: array
+          items:
+            type: string
+        known_lower_bound:
+          nullable: true
+          oneOf:
+          - $ref: '#/components/schemas/RiskLevel'
+          - $ref: '#/components/schemas/NullEnum'
+        rule_ids:
+          type: array
+          items:
+            type: string
+        rule_explanations:
+          type: array
+          items:
+            type: string
+        measurements:
+          $ref: '#/components/schemas/Measurements'
+        timing_quality:
+          type: string
+        anchor_gap_mi:
+          type: string
+        anchor_gap_seconds:
+          type: string
+      required:
+      - anchor_gap_mi
+      - anchor_gap_seconds
+      - complete
+      - coordinate
+      - distance_mi
+      - eta_utc
+      - governing_conditions
+      - id
+      - index
+      - known_lower_bound
+      - label
+      - measurements
+      - overall_risk
+      - route_id
+      - rule_explanations
+      - rule_ids
+      - timing_quality
+    CheckpointIntervalMilesEnum:
+      enum:
+      - 10
+      - 25
+      - 50
+      type: integer
+      description: |-
+        * `10` - 10
+        * `25` - 25
+        * `50` - 50
+    ClassificationBasisEnum:
+      enum:
+      - selected_variable
+      type: string
+      description: '* `selected_variable` - selected_variable'
+    Coordinate:
+      type: object
+      properties:
+        latitude:
+          type: string
+        longitude:
+          type: string
+      required:
+      - latitude
+      - longitude
+    Defaults:
+      type: object
+      properties:
+        departure_at:
+          type: string
+          format: date-time
+        departure_local:
+          type: string
+        departure_fold:
+          type: integer
+          nullable: true
+        origin_timezone:
+          type: string
+        load_weight_lb:
+          type: string
+        checkpoint_interval_miles:
+          type: integer
+      required:
+      - checkpoint_interval_miles
+      - departure_at
+      - departure_fold
+      - departure_local
+      - load_weight_lb
+      - origin_timezone
+    DepartureFoldEnum:
+      enum:
+      - 0
+      - 1
+      type: integer
+      description: |-
+        * `0` - 0
+        * `1` - 1
+    ErrorDetail:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        details:
+          type: object
+          additionalProperties: {}
+      required:
+      - code
+      - details
+      - message
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/ErrorDetail'
+        request_id:
+          type: string
+          format: uuid
+      required:
+      - error
+      - request_id
+    Exposure:
+      type: object
+      properties:
+        low_mi:
+          type: string
+        moderate_mi:
+          type: string
+        high_mi:
+          type: string
+        severe_mi:
+          type: string
+        no_travel_mi:
+          type: string
+        unknown_mi:
+          type: string
+      required:
+      - high_mi
+      - low_mi
+      - moderate_mi
+      - no_travel_mi
+      - severe_mi
+      - unknown_mi
+    Frame:
+      type: object
+      properties:
+        analysis_id:
+          type: string
+          format: uuid
+        mode:
+          $ref: '#/components/schemas/AnalysisMode'
+        sample_data:
+          type: boolean
+        hour:
+          type: integer
+        variable:
+          $ref: '#/components/schemas/VariableEnum'
+        requested_at:
+          type: string
+          format: date-time
+        unit:
+          type: string
+        classification_basis:
+          $ref: '#/components/schemas/ClassificationBasisEnum'
+        acquisition_status:
+          $ref: '#/components/schemas/AcquisitionStatusEnum'
+        coverage:
+          $ref: '#/components/schemas/FrameCoverage'
+        cells:
+          type: array
+          items:
+            $ref: '#/components/schemas/FrameCell'
+        warnings:
+          type: array
+          items:
+            type: string
+      required:
+      - acquisition_status
+      - analysis_id
+      - cells
+      - classification_basis
+      - coverage
+      - hour
+      - mode
+      - requested_at
+      - sample_data
+      - unit
+      - variable
+      - warnings
+    FrameCell:
+      type: object
+      properties:
+        id:
+          type: string
+        geometry:
+          $ref: '#/components/schemas/PolygonGeometry'
+        coordinate:
+          $ref: '#/components/schemas/Coordinate'
+        measurement:
+          $ref: '#/components/schemas/Measurement'
+      required:
+      - coordinate
+      - geometry
+      - id
+      - measurement
+    FrameCoverage:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/FrameCoverageStatusEnum'
+        known_cells:
+          type: integer
+        total_cells:
+          type: integer
+        reason_codes:
+          type: array
+          items:
+            type: string
+      required:
+      - known_cells
+      - reason_codes
+      - status
+      - total_cells
+    FrameCoverageStatusEnum:
+      enum:
+      - complete
+      - partial
+      - missing
+      type: string
+      description: |-
+        * `complete` - complete
+        * `partial` - partial
+        * `missing` - missing
+    GeocodeCandidate:
+      type: object
+      properties:
+        name:
+          type: string
+        latitude:
+          type: string
+        longitude:
+          type: string
+        timezone:
+          type: string
+          nullable: true
+        entry_points:
+          type: array
+          items:
+            $ref: '#/components/schemas/Coordinate'
+      required:
+      - entry_points
+      - latitude
+      - longitude
+      - name
+      - timezone
+    GeocodeInputRequest:
+      type: object
+      properties:
+        text:
+          type: string
+          minLength: 1
+          maxLength: 200
+      required:
+      - text
+    Health:
+      type: object
+      properties:
+        assessment_access_required:
+          type: boolean
+        status:
+          $ref: '#/components/schemas/HealthStatusEnum'
+        mode:
+          $ref: '#/components/schemas/SampleMode'
+        live_available:
+          type: boolean
+        policy_version:
+          type: string
+        version:
+          type: string
+      required:
+      - assessment_access_required
+      - live_available
+      - mode
+      - policy_version
+      - status
+      - version
+    HealthStatusEnum:
+      enum:
+      - ok
+      type: string
+      description: '* `ok` - ok'
+    KindEnum:
+      enum:
+      - synthetic
+      - forecast
+      type: string
+      description: |-
+        * `synthetic` - synthetic
+        * `forecast` - forecast
+    LifecycleEntry:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/LifecycleEntryStatusEnum'
+        at:
+          type: string
+          format: date-time
+      required:
+      - at
+      - status
+    LifecycleEntryStatusEnum:
+      enum:
+      - queued
+      - running
+      - complete
+      type: string
+      description: |-
+        * `queued` - queued
+        * `running` - running
+        * `complete` - complete
+    LineGeometry:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/LineGeometryTypeEnum'
+        coordinates:
+          type: array
+          items:
+            type: array
+            items:
+              type: number
+              format: double
+            maxItems: 2
+            minItems: 2
+          minItems: 2
+      required:
+      - coordinates
+      - type
+    LineGeometryTypeEnum:
+      enum:
+      - LineString
+      type: string
+      description: '* `LineString` - LineString'
+    Location:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 80
+        latitude:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,6})?$
+        longitude:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,4}(?:\.\d{0,6})?$
+      required:
+      - latitude
+      - longitude
+      - name
+    LocationRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 80
+        latitude:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,6})?$
+        longitude:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,4}(?:\.\d{0,6})?$
+      required:
+      - latitude
+      - longitude
+      - name
+    Measurement:
+      type: object
+      properties:
+        value:
+          type: string
+          nullable: true
+        unit:
+          $ref: '#/components/schemas/UnitEnum'
+        missing_reason:
+          type: string
+          nullable: true
+        provenance:
+          $ref: '#/components/schemas/Provenance'
+      required:
+      - missing_reason
+      - provenance
+      - unit
+      - value
+    Measurements:
+      type: object
+      properties:
+        wind:
+          $ref: '#/components/schemas/Measurement'
+        rain:
+          $ref: '#/components/schemas/Measurement'
+        snow:
+          $ref: '#/components/schemas/Measurement'
+      required:
+      - rain
+      - snow
+      - wind
+    NullEnum:
+      enum:
+      - null
+    PolygonGeometry:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/PolygonGeometryTypeEnum'
+        coordinates:
+          type: array
+          items:
+            type: array
+            items:
+              type: array
+              items:
+                type: number
+                format: double
+              maxItems: 2
+              minItems: 2
+      required:
+      - coordinates
+      - type
+    PolygonGeometryTypeEnum:
+      enum:
+      - Polygon
+      type: string
+      description: '* `Polygon` - Polygon'
+    Provenance:
+      type: object
+      properties:
+        kind:
+          $ref: '#/components/schemas/KindEnum'
+        source:
+          type: string
+        model:
+          type: string
+        model_run_at:
+          type: string
+          format: date-time
+          nullable: true
+        valid_at:
+          type: string
+          format: date-time
+          nullable: true
+        interval_start:
+          type: string
+          format: date-time
+          nullable: true
+        interval_end:
+          type: string
+          format: date-time
+          nullable: true
+        native_interval_seconds:
+          type: integer
+          nullable: true
+        retrieved_at:
+          type: string
+          format: date-time
+        quality_flags:
+          type: array
+          items:
+            type: string
+        source_point:
+          allOf:
+          - $ref: '#/components/schemas/Coordinate'
+          nullable: true
+        source_policy:
+          type: string
+      required:
+      - interval_end
+      - interval_start
+      - kind
+      - model
+      - model_run_at
+      - native_interval_seconds
+      - quality_flags
+      - retrieved_at
+      - source
+      - valid_at
+    Recommendation:
+      type: object
+      properties:
+        route_id:
+          type: string
+          nullable: true
+        state:
+          $ref: '#/components/schemas/StateEnum'
+        reason:
+          type: string
+        ranking_criteria:
+          type: array
+          items:
+            type: string
+      required:
+      - ranking_criteria
+      - reason
+      - route_id
+      - state
+    RequestMode:
+      enum:
+      - sample
+      - live
+      - actual
+      type: string
+      description: |-
+        * `sample` - sample
+        * `live` - live
+        * `actual` - actual
+    RiskLevel:
+      enum:
+      - low
+      - moderate
+      - high
+      - severe
+      - no_travel
+      - unknown
+      type: string
+      description: |-
+        * `low` - low
+        * `moderate` - moderate
+        * `high` - high
+        * `severe` - severe
+        * `no_travel` - no_travel
+        * `unknown` - unknown
+    RiskSpan:
+      type: object
+      properties:
+        start_mi:
+          type: string
+        end_mi:
+          type: string
+        classification:
+          $ref: '#/components/schemas/RiskLevel'
+        geometry:
+          $ref: '#/components/schemas/LineGeometry'
+        checkpoint_ids:
+          type: array
+          items:
+            type: string
+        governing_conditions:
+          type: array
+          items:
+            type: string
+      required:
+      - checkpoint_ids
+      - classification
+      - end_mi
+      - geometry
+      - governing_conditions
+      - start_mi
+    Route:
+      type: object
+      properties:
+        id:
+          type: string
+        code:
+          type: string
+        label:
+          type: string
+        geometry:
+          $ref: '#/components/schemas/LineGeometry'
+        distance_mi:
+          type: string
+        duration_seconds:
+          type: integer
+        departure_at:
+          type: string
+          format: date-time
+        arrival_at:
+          type: string
+          format: date-time
+        exposure:
+          $ref: '#/components/schemas/Exposure'
+        average_risk:
+          type: string
+          nullable: true
+        verified_fraction:
+          type: string
+        eligible:
+          type: boolean
+        eligibility_reasons:
+          type: array
+          items:
+            type: string
+        rank:
+          type: integer
+          nullable: true
+        checkpoints:
+          type: array
+          items:
+            $ref: '#/components/schemas/Checkpoint'
+        risk_spans:
+          type: array
+          items:
+            $ref: '#/components/schemas/RiskSpan'
+        route_notices:
+          type: array
+          items:
+            type: string
+        timing_quality:
+          type: string
+        routing_eligibility_basis:
+          $ref: '#/components/schemas/RoutingEligibilityBasisEnum'
+      required:
+      - arrival_at
+      - average_risk
+      - checkpoints
+      - code
+      - departure_at
+      - distance_mi
+      - duration_seconds
+      - eligibility_reasons
+      - eligible
+      - exposure
+      - geometry
+      - id
+      - label
+      - rank
+      - risk_spans
+      - route_notices
+      - routing_eligibility_basis
+      - timing_quality
+      - verified_fraction
+    RoutingEligibilityBasisEnum:
+      enum:
+      - authored_sample_assumption
+      - provider_truck_sections_and_notices
+      type: string
+      description: |-
+        * `authored_sample_assumption` - authored_sample_assumption
+        * `provider_truck_sections_and_notices` - provider_truck_sections_and_notices
+    SampleMode:
+      enum:
+      - sample
+      type: string
+      description: '* `sample` - sample'
+    Scenario:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/ScenarioId'
+        label:
+          type: string
+        description:
+          type: string
+      required:
+      - description
+      - id
+      - label
+    ScenarioId:
+      enum:
+      - complete
+      - partial
+      - no-travel
+      type: string
+      description: |-
+        * `complete` - complete
+        * `partial` - partial
+        * `no-travel` - no-travel
+    ScenarioLocations:
+      type: object
+      properties:
+        origin:
+          $ref: '#/components/schemas/Location'
+        destination:
+          $ref: '#/components/schemas/Location'
+      required:
+      - destination
+      - origin
+    Scenarios:
+      type: object
+      properties:
+        mode:
+          $ref: '#/components/schemas/SampleMode'
+        sample_data:
+          type: boolean
+        locations:
+          $ref: '#/components/schemas/ScenarioLocations'
+        defaults:
+          $ref: '#/components/schemas/Defaults'
+        scenarios:
+          type: array
+          items:
+            $ref: '#/components/schemas/Scenario'
+      required:
+      - defaults
+      - locations
+      - mode
+      - sample_data
+      - scenarios
+    StateEnum:
+      enum:
+      - recommended
+      - blocked
+      - unverified
+      type: string
+      description: |-
+        * `recommended` - recommended
+        * `blocked` - blocked
+        * `unverified` - unverified
+    TruckProfile:
+      type: object
+      properties:
+        current_weight_kg:
+          type: integer
+          maximum: 100000
+          minimum: 1
+        height_m:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
+        width_m:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
+        length_m:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
+        axle_weight_kg:
+          type: integer
+          maximum: 50000
+          minimum: 1
+        axle_count:
+          type: integer
+          maximum: 20
+          minimum: 1
+    TruckProfileRequest:
+      type: object
+      properties:
+        current_weight_kg:
+          type: integer
+          maximum: 100000
+          minimum: 1
+        height_m:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
+        width_m:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
+        length_m:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
+        axle_weight_kg:
+          type: integer
+          maximum: 50000
+          minimum: 1
+        axle_count:
+          type: integer
+          maximum: 20
+          minimum: 1
+    UnitEnum:
+      enum:
+      - mph
+      - in/hour
+      type: string
+      description: |-
+        * `mph` - mph
+        * `in/hour` - in/hour
+    VariableEnum:
+      enum:
+      - wind
+      - rain
+      - snow
+      type: string
+      description: |-
+        * `wind` - wind
+        * `rain` - rain
+        * `snow` - snow
+  securitySchemes:
+    AssessmentReviewer:
+      type: http
+      scheme: bearer
+      description: Private reviewer code required on hosted API paths except health.
+        Local access defaults open.

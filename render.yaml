@@ -1,0 +1,40 @@
+# Prepared only. Applying this blueprint creates infrastructure; authorization required.
+services:
+  - type: web
+    name: spotter-atlas-assessment-api
+    runtime: python
+    plan: free
+    rootDir: backend
+    buildCommand: bash scripts/render-build.sh
+    startCommand: bash scripts/render-start.sh
+    healthCheckPath: /api/v1/health/
+    autoDeployTrigger: "off"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.12
+      - key: ATLAS_DEPLOYMENT
+        value: hosted
+      - key: DJANGO_DEBUG
+        value: "0"
+      - key: DJANGO_SECRET_KEY
+        sync: false
+      - key: DATABASE_URL
+        sync: false
+      - key: ATLAS_ASSESSMENT_ACCESS_HASH
+        sync: false
+      - key: ATLAS_CORS_ORIGINS
+        sync: false
+      - key: ATLAS_MAX_LOCAL_SNAPSHOTS
+        value: "20"
+      - key: ATLAS_SNAPSHOT_RETENTION_HOURS
+        value: "1"
+      - key: ATLAS_LIVE_ENABLED
+        value: "0"
+      - key: ATLAS_NONCOMMERCIAL_ASSESSMENT
+        value: "1"
+      - key: ATLAS_ACCEPT_PROVIDER_SNOWFALL
+        value: "1"
+      - key: ATLAS_PUBLIC_WEATHER_CONFIRMED
+        value: "0"
+      - key: ATLAS_PUBLIC_TOMTOM_CONFIRMED
+        value: "0"

@@ -1,0 +1,83 @@
+# Local provider credentials: never commit or include in test evidence.
+.env
+.env.*
+!.env.feasibility.example
+!**/.env.example
+!**/.env.deployment.example
+backend/staticfiles/
+*.zip
+
+# Disposable feasibility environments and caches.
+experiments/.venv/
+experiments/.packages/
+experiments/cache/
+experiments/__pycache__/
+*.pyc
+
+# Raw provider responses are local-only pending retention review.
+experiments/private_results/
+experiments/design_review_checks/
+backend/.venv/
+backend/.pytest_cache/
+backend/.ruff_cache/
+backend/.coverage
+backend/coverage.xml
+backend/local.sqlite3
+backend/*.sqlite3
+backend/**/*.sqlite3
+frontend/node_modules/
+frontend/dist/
+frontend/coverage/
+frontend/.vite/
+__pycache__/
+*.log
+
+# Gate 2 isolated decoder/runtime and transient probe data; never app dependencies.
+experiments/gate2/.venv/
+experiments/gate2/.venv-linux/
+experiments/gate2/cache/
+experiments/gate2/private_results/
+
+# Gate 2C isolated NOAA and Linux packaging research.
+experiments/gate2c/cache/
+experiments/gate2c/private_results/
+experiments/gate2c/runtime/
+experiments/gate2c/.venv*/
+experiments/gate2c/.pytest_cache/
+
+# Final bounded HRRR frozen-water closure test; private source/data caches.
+experiments/hrrr_closure/cache/
+experiments/hrrr_closure/private_results/
+experiments/hrrr_closure/.pytest_cache/
+
+# Finite DWD rainfall/native-runtime milestone; no provider data in release.
+experiments/dwd_icon/cache/
+experiments/dwd_icon/private_results/
+experiments/dwd_icon/runtime/
+experiments/dwd_icon/.pytest_cache/
+experiments/dwd_icon/artifacts/
+
+# Assessment local provider allowance and transient live output.
+backend/.local-provider-budget*
+backend/.local/
+
+# Preserve historical/private assessment research locally, outside the release repository.
+experiments/
+design/
+.pytest_cache/
+.ruff_cache/
+.agents/
+fs-assessment-spotter.pdf
+Spotter_Atlas_Master_Spec_v1.md
+PLAN.md
+AUDIT_README.md
+atlas-noir-design-review-validation.json
+docs/planning/
+docs/feasibility/
+docs/design/
+docs/decisions/
+docs/implementation/
+frontend/e2e/results/
+frontend/*.tsbuildinfo
+*.egg-info/
+backend/*.sqlite3-*
