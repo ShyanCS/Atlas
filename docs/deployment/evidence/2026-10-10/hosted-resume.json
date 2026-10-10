@@ -1,0 +1,13 @@
+{
+  "step": "resume",
+  "url": "https://spotter-atlas-assessment-api.onrender.com",
+  "provider_calls": 0,
+  "health_seconds": 0.406,
+  "https": "PASS",
+  "live_available": false,
+  "reviewer_access_required": true,
+  "restart_persistence": "PASS",
+  "http_requests": 2,
+  "mean_request_seconds": 0.83,
+  "max_request_seconds": 1.253
+}

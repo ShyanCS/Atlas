@@ -1,0 +1,6 @@
+{
+  "sampling": "Render time-series samples; not a certified worst-case peak",
+  "memory_peak_bytes": 111099900,
+  "memory_limit_bytes": 536870900,
+  "cpu_limit": 0.15
+}

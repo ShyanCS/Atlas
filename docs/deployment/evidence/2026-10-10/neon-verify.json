@@ -1,0 +1,21 @@
+{
+  "step": "verify",
+  "provider_calls": 0,
+  "tls": true,
+  "certificate_verification": "verify-full",
+  "server_version": 160015,
+  "connect_seconds": 2.309,
+  "sample_seconds": 6.606,
+  "routes": 3,
+  "selected_recommendation": "route-b",
+  "reviewer_access": "PASS",
+  "frame_reads": 147,
+  "frame_read_seconds": 423.702,
+  "immutable_trigger": "PASS",
+  "durable_cap": "PASS",
+  "production_counts": {
+    "routing": 0,
+    "weather": 0,
+    "geocoding": 0
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "status": "FAIL",
+  "checks": [
+    {
+      "name": "HTTPS/CSP, reviewer access, Demo Mode and MapLibre 1440x900",
+      "status": "PASS",
+      "sample_to_map_ms": 8406
+    },
+    {
+      "name": "Keyboard timeline, Unknown coverage, immutable recommendation and responsive width 1440",
+      "status": "PASS"
+    },
+    {
+      "name": "Reload clears reviewer access without resubmitting 1440",
+      "status": "PASS"
+    },
+    {
+      "name": "HTTPS/CSP, reviewer access, Demo Mode and MapLibre 390x844",
+      "status": "PASS",
+      "sample_to_map_ms": 4409
+    }
+  ],
+  "errors": [],
+  "unexpected_requests": [],
+  "provider_calls": 0,
+  "rendering": "Headless Chrome SwiftShader; physical GPU not verified",
+  "failure": "locator.click: Timeout 60000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByTestId('route-A')\u001b[22m\n\u001b[2m    - locator resolved to <button class=\"route-card \" aria-pressed=\"false\" data-testid=\"route-A\" aria-label=\"Inspect Route A, Alternative\">…</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    115 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m        - element is not visible\u001b[22m\n\u001b[2m      - retrying click action\u001b[22m\n\u001b[2m        - waiting 500ms\u001b[22m\n",
+  "completed_at": "2026-10-10T18:10:12.703Z"
+}

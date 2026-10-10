@@ -1,0 +1,16 @@
+{
+  "id": "6628e512-637f-4dde-a16b-06f6c82db8b4",
+  "url": "https://6628e512.spotter-atlas-assessment.pages.dev",
+  "latest_stage": {
+    "name": "queued",
+    "started_on": null,
+    "ended_on": null,
+    "status": "idle"
+  },
+  "commit": {
+    "branch": "refine/product-identity",
+    "commit_hash": "adeba19465414a4335c3ff13ea2d09d4cd8688e2",
+    "commit_message": "Pin Node 24 for the Cloudflare Pages assessment build",
+    "commit_dirty": false
+  }
+}

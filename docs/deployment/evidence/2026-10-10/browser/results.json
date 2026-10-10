@@ -1,0 +1,40 @@
+{
+  "status": "PASS",
+  "checks": [
+    {
+      "name": "HTTPS/CSP, reviewer access, Demo Mode and MapLibre 1440x900",
+      "status": "PASS",
+      "sample_to_map_ms": 5316
+    },
+    {
+      "name": "Keyboard timeline, Unknown coverage, immutable recommendation and responsive width 1440",
+      "status": "PASS"
+    },
+    {
+      "name": "Reload clears reviewer access without resubmitting 1440",
+      "status": "PASS"
+    },
+    {
+      "name": "HTTPS/CSP, reviewer access, Demo Mode and MapLibre 390x844",
+      "status": "PASS",
+      "sample_to_map_ms": 4283
+    },
+    {
+      "name": "Keyboard timeline, Unknown coverage, immutable recommendation and responsive width 390",
+      "status": "PASS"
+    },
+    {
+      "name": "Mobile route chooser, forecast navigation and driver briefing",
+      "status": "PASS"
+    },
+    {
+      "name": "Reload clears reviewer access without resubmitting 390",
+      "status": "PASS"
+    }
+  ],
+  "errors": [],
+  "unexpected_requests": [],
+  "provider_calls": 0,
+  "rendering": "Headless Chrome SwiftShader; physical GPU not verified",
+  "completed_at": "2026-10-10T18:13:32.967Z"
+}

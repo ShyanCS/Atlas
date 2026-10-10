@@ -1,0 +1,35 @@
+{
+  "id": "ba77f304-67fa-4fb8-8109-f0902dd0ca8a",
+  "name": "spotter-atlas-assessment",
+  "subdomain": "spotter-atlas-assessment.pages.dev",
+  "source": {
+    "type": "github",
+    "config": {
+      "owner": "ShyanCS",
+      "owner_id": "99161686",
+      "repo_name": "Atlas",
+      "repo_id": "1413402563",
+      "production_branch": "refine/product-identity",
+      "pr_comments_enabled": false,
+      "deployments_enabled": true,
+      "production_deployments_enabled": false,
+      "preview_deployment_setting": "none",
+      "preview_branch_includes": [
+        "*"
+      ],
+      "preview_branch_excludes": [],
+      "path_includes": [
+        "*"
+      ],
+      "path_excludes": []
+    }
+  },
+  "build_config": {
+    "build_command": "npm run build",
+    "destination_dir": "dist",
+    "build_caching": false,
+    "root_dir": "frontend",
+    "web_analytics_tag": null,
+    "web_analytics_token": null
+  }
+}

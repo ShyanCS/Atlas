@@ -1,0 +1,30 @@
+{
+  "step": "verify",
+  "url": "https://spotter-atlas-assessment-api.onrender.com",
+  "provider_calls": 0,
+  "health_seconds": 0.797,
+  "https": "PASS",
+  "live_available": false,
+  "reviewer_access_required": true,
+  "scenarios": {
+    "complete": {
+      "state": "recommended",
+      "seconds": 2.895
+    },
+    "partial": {
+      "state": "unverified",
+      "seconds": 2.549
+    },
+    "no-travel": {
+      "state": "blocked",
+      "seconds": 2.197
+    }
+  },
+  "frame_reads": 147,
+  "frame_seconds": 61.758,
+  "cors": "PASS",
+  "reviewer_access": "PASS",
+  "http_requests": 157,
+  "mean_request_seconds": 0.46,
+  "max_request_seconds": 2.895
+}

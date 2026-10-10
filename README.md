@@ -8,36 +8,38 @@ Spotter Atlas brings truck-aware route planning, hourly weather forecasts and ro
 
 [Features](#key-features) · [Getting started](#getting-started) · [Architecture](#architecture) · [Data sources](#data-sources-and-limitations) · [Roadmap](#roadmap)
 
+**[Open the hosted assessment demo](https://spotter-atlas-assessment.pages.dev/)** — reviewer access required. The hosted release uses labeled sample scenarios; live-provider access remains disabled. [Deployment verification](docs/deployment/AUTOMATED_DEPLOYMENT_STATUS.md) · [Hosted screenshots and evidence](docs/deployment/evidence/2026-10-10/README.md)
+
 ## Product preview
 
 ### Dispatch Canvas
 
-![Spotter Atlas desktop Dispatch Canvas](docs/screenshots/dispatch.desktop.png)
+![Spotter Atlas hosted desktop Dispatch Canvas](docs/deployment/evidence/2026-10-10/browser/dispatch-ready-1440x900.png)
 
-*Route comparison, arrival-time risk segments, checkpoint inspection and the forecast timeline. Preview uses the included demo trip.*
+_Route comparison, arrival-time risk segments, checkpoint inspection and the forecast timeline. Preview uses the included demo trip._
 
 ### Mobile experience
 
 <p align="center">
-  <img src="docs/screenshots/dispatch.mobile.png" width="390" alt="Spotter Atlas mobile interface showing a demo trip" />
+  <img src="docs/deployment/evidence/2026-10-10/browser/dispatch-ready-390x844.png" width="390" alt="Spotter Atlas hosted mobile interface showing a demo trip" />
 </p>
 
-*A focused mobile view of the trip, preferred route and operational map, with quick access to forecasts and the driver briefing.*
+_A focused mobile view of the trip, preferred route and operational map, with quick access to forecasts and the driver briefing._
 
 ## Key features
 
-| Capability | What it delivers |
-|---|---|
-| Weather-aware truck routing | Committed origin/destination coordinates, departure time, physical truck profile and TomTom truck-routing integration. |
-| Multiple route alternatives | Compare genuine provider candidates by duration, distance and weather exposure; duplicate or incompatible alternatives are rejected. |
-| Dynamic checkpoint forecasting | Sample every 10, 25 or 50 miles and match wind, rain and snowfall to checkpoint ETAs. |
-| Cargo-sensitive risk analysis | Deterministic thresholds and strict cargo-weight overrides, with the applied rules available for inspection. |
-| Explainable recommendations | Compare Severe exposure, High exposure, distance-weighted average risk and travel time in that exact order. |
-| Interactive geospatial workspace | MapLibre route selection, differentiated risk segments, weather overlays and detailed hazard/checkpoint inspection. |
-| 48-hour weather timeline | Explore 49 hourly positions independently of the saved arrival-time recommendation. |
-| Clear uncertainty handling | Explicit **Unknown**, incomplete coverage and **No Travel** states; unqualified routes cannot become recommended through selection. |
-| Persistent analysis snapshots | Completed results and forecast frames persist in PostgreSQL, with immutable calculations and bounded retention. SQLite supports local exploration. |
-| Responsive Atlas Noir interface | Dispatcher-focused desktop composition, mobile trip inspection and a concise driver summary. |
+| Capability                       | What it delivers                                                                                                                                   |
+| -------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Weather-aware truck routing      | Committed origin/destination coordinates, departure time, physical truck profile and TomTom truck-routing integration.                             |
+| Multiple route alternatives      | Compare genuine provider candidates by duration, distance and weather exposure; duplicate or incompatible alternatives are rejected.               |
+| Dynamic checkpoint forecasting   | Sample every 10, 25 or 50 miles and match wind, rain and snowfall to checkpoint ETAs.                                                              |
+| Cargo-sensitive risk analysis    | Deterministic thresholds and strict cargo-weight overrides, with the applied rules available for inspection.                                       |
+| Explainable recommendations      | Compare Severe exposure, High exposure, distance-weighted average risk and travel time in that exact order.                                        |
+| Interactive geospatial workspace | MapLibre route selection, differentiated risk segments, weather overlays and detailed hazard/checkpoint inspection.                                |
+| 48-hour weather timeline         | Explore 49 hourly positions independently of the saved arrival-time recommendation.                                                                |
+| Clear uncertainty handling       | Explicit **Unknown**, incomplete coverage and **No Travel** states; unqualified routes cannot become recommended through selection.                |
+| Persistent analysis snapshots    | Completed results and forecast frames persist in PostgreSQL, with immutable calculations and bounded retention. SQLite supports local exploration. |
+| Responsive Atlas Noir interface  | Dispatcher-focused desktop composition, mobile trip inspection and a concise driver summary.                                                       |
 
 These capabilities are implemented. The [roadmap](#roadmap) lists the experiences planned next.
 
@@ -56,21 +58,23 @@ Django calculates route progress, checkpoint arrival times, weather classificati
 
 ## Technology stack
 
-| Layer | Technologies |
-|---|---|
-| Frontend | React, TypeScript, Vite, MapLibre GL JS |
-| Backend | Python, Django REST Framework, PostgreSQL; SQLite for local development |
-| Integrations | TomTom truck routing/geocoding, Open-Meteo hourly forecasts |
-| Infrastructure | Prepared configuration for Cloudflare Pages, Render and Neon |
-| Verification | pytest, Vitest, Testing Library, Playwright, Ruff, ESLint and GitHub Actions |
+| Layer          | Technologies                                                                 |
+| -------------- | ---------------------------------------------------------------------------- |
+| Frontend       | React, TypeScript, Vite, MapLibre GL JS                                      |
+| Backend        | Python, Django REST Framework, PostgreSQL; SQLite for local development      |
+| Integrations   | TomTom truck routing/geocoding, Open-Meteo hourly forecasts                  |
+| Infrastructure | Cloudflare Pages Free, Render Free and Neon Free                             |
+| Verification   | pytest, Vitest, Testing Library, Playwright, Ruff, ESLint and GitHub Actions |
 
-Deployment configuration is ready for the preferred hosting topology; a hosted release has not been activated.
+The reviewer-protected Demo Mode release is hosted on Cloudflare Pages, Render and Neon. PostgreSQL persistence, restart recovery, three-route sample ranking and all 49 forecast positions were verified. The live workflow is implemented and previously tested locally; it is not enabled or claimed as verified on the hosted release. Free backend cold starts can delay initial access.
 
 ## Getting started
 
 ### Explore the demo
 
 The built-in Chicago–Atlanta scenarios let you explore complete weather coverage, missing snowfall and No Travel conditions without external API credentials.
+
+For the hosted demo, request the private reviewer code from the repository owner, paste it into **Private reviewer access code**, then unlock the workspace. The code is an assessment access gate, not a provider API key or a personal account password. It stays in tab memory and must be entered again after reloading. Share it privately with authorized reviewers; never place it in GitHub, screenshots, URLs or frontend configuration. Local development does not require a code unless an access hash is configured.
 
 Requirements: **Python 3.12** and **Node 24.15+ in the 24.x line** (verified with 24.19.0).
 
@@ -167,19 +171,19 @@ With both local servers running and Google Chrome installed:
 npm run test:browser
 ```
 
-CI runs the PostgreSQL backend suite, frontend checks/build and demo browser tests without provider credentials. [Verification summary](docs/deployment/READINESS.md) · [Browser test guide](frontend/e2e/README.md)
+CI runs the PostgreSQL backend suite, frontend checks/build and demo browser tests without provider credentials. The 10 October 2026 deployment verification recorded **273 PostgreSQL backend tests, 44 frontend tests and seven hosted browser check groups passing**, plus all 147 forecast variable/hour reads. These are dated results, not a claim that every future build passes. [Verification summary](docs/deployment/READINESS.md) · [Browser test guide](frontend/e2e/README.md)
 
 ## Architecture
 
 Spotter Atlas is a modular monolith. Provider adapters normalize routing and weather data; trip orchestration generates checkpoints and delegates evaluation to the pure risk engine. Immutable analyses keep the inputs, provenance, exposure and recommendation together. Typed REST contracts connect those results to React state, route inspection and weather visualization.
 
-| Module | Responsibility |
-|---|---|
-| `backend/atlas/providers/` | Provider boundaries, normalization and bounded acquisition |
-| `backend/atlas/domain/` | Versioned risk policy, route timing, exposure and ranking |
-| `backend/atlas/services/` | Analysis orchestration, persistence and forecast frame reads |
-| `backend/atlas/api/` | Validation, serializers, structured errors and OpenAPI |
-| `frontend/src/` | Typed API client, run-scoped state and Dispatch Canvas presentation |
+| Module                     | Responsibility                                                      |
+| -------------------------- | ------------------------------------------------------------------- |
+| `backend/atlas/providers/` | Provider boundaries, normalization and bounded acquisition          |
+| `backend/atlas/domain/`    | Versioned risk policy, route timing, exposure and ranking           |
+| `backend/atlas/services/`  | Analysis orchestration, persistence and forecast frame reads        |
+| `backend/atlas/api/`       | Validation, serializers, structured errors and OpenAPI              |
+| `frontend/src/`            | Typed API client, run-scoped state and Dispatch Canvas presentation |
 
 [API contract](backend/API_CONTRACT.md) · [Backend guide](backend/README.md) · [Frontend guide](frontend/README.md) · [Deployment guide](docs/deployment/SETUP.md)
 

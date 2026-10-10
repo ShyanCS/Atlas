@@ -1,0 +1,14 @@
+{
+  "step": "migrate",
+  "provider_calls": 0,
+  "tls": true,
+  "certificate_verification": "verify-full",
+  "server_version": 160015,
+  "connect_seconds": 2.24,
+  "migrations": "PASS",
+  "initial_counts": {
+    "routing": 0,
+    "weather": 0,
+    "geocoding": 0
+  }
+}

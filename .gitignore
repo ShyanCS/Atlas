@@ -81,3 +81,7 @@ frontend/e2e/results/
 frontend/*.tsbuildinfo
 *.egg-info/
 backend/*.sqlite3-*
+
+# Local Cloudflare CLI caches; authentication stays outside the repository.
+.wrangler/
+.neon
